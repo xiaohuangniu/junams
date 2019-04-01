@@ -1,0 +1,147 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <!-- END RIBBON -->
+    <div class="content">
+        <div class="panel panel-default panel-intro">
+            <div class="panel-heading">
+                <div class="panel-lead">
+                    <em>
+                        管理员操作日志管理
+                    </em>
+                    ...
+                </div>
+            </div>
+            <div class="panel-body">
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade active in" id="one">
+                        <div class="widget-body no-padding">
+                            <div class="bootstrap-table">
+
+                                <div class="fixed-table-toolbar">
+                                    <div class="bs-bars pull-left">
+                                        <div id="toolbar" class="toolbar">
+                                            <a href="javascript:window.location.reload();" class="btn btn-primary btn-refresh" title="刷新">
+                                                <i class="fa fa-refresh"></i>
+                                            </a>
+                                            {if condition="$adminController->vif('actionlog','emptyall')"}
+                                            <a href="{:url('actionlog/emptyall')}" class="btn btn-danger btn-delone" title="清空所有日志">
+                                                <i class="fa fa-trash"></i> 清空所有日志
+                                            </a>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                    <div class="columns columns-right btn-group pull-right">
+                                        
+                                        <div class="keep-open btn-group" title="列">
+                                            <button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                <i class="glyphicon glyphicon-th icon-th"></i>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" id="table_menu">
+                                                
+                                            </ul>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="fixed-table-container">
+                                    <div class="fixed-table-body">
+                                        <table id="table" class="table table-striped table-bordered table-hover" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th data-status="1" width="30px"><div class="th-inner"><input type="checkbox" onclick="javascript:selectAll(this);" /></div></th>
+                                                    <th data-status="1"><div class="th-inner">ID</div></th>
+                                                    <th data-status="1"><div class="th-inner">管理员昵称</div></th>
+                                                    <th data-status="1"><div class="th-inner">操作类型</div></th>
+                                                    <th data-status="1"><div class="th-inner">操作状态</div></th>
+                                                    <th data-status="1"><div class="th-inner">IP</div></th>
+                                                    <th data-status="1"><div class="th-inner">操作时间</div></th>
+                                                    <th data-status="1" width="100px"><div class="th-inner">操作</div></th>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <form method="POST" action="{:url('actionlog/del')}">
+                                            <tbody>
+                                                {volist name="list" id="v"}
+                                                <tr>
+                                                    <td align="center"><input type="checkbox" name="id[]" class="ids" lay-skin="primary" value="{$v.mal_id}"></td>
+                                                    <td align="center">{$v.mal_id}</td>
+                                                    <td align="center">{$v.m_nice}</td>
+                                                    <td align="center">{$v.lt_name}</td>
+                                                    <td align="center">
+                                                        {switch $v.mal_status}
+                                                            {case 1} <font style="color: #009688">成功</font> {/case}
+                                                            {case 2} <font style="color: #01AAED">失败</font> {/case}
+                                                            {case 3} <font style="color: #FF5722">异常</font> {/case}
+                                                        {/switch}
+                                                    </td>
+                                                    <td align="center">{$v.mal_ip}</td>
+                                                    <td align="center">{$v.mal_time|date="Y-m-d H:i:s",###}</td>
+                                                    <td align="center">
+                                                        {if condition="$adminController->vif('actionlog','details')"}
+                                                            <a href="javascript:details('{:url('actionlog/details', ['id'=>$v['mal_id']])}');" class="btn btn-xs btn-info" title="预览">
+                                                                <i class="fa fa-hand-scissors-o"></i>
+                                                            </a>
+                                                        {/if}
+
+                                                        {if condition="$adminController->vif('actionlog','del')"}
+                                                            <a href="{:url('del', ['id'=>$v['mal_id']])}" class="btn btn-xs btn-danger btn-delone" title="删除">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        {/if}
+                                                    </td>
+                                                </tr>
+                                                {/volist}
+                                                <tr>
+                                                    <td colspan="10">
+                                                        {if condition="$adminController->vif('actionlog','del')"}
+                                                            <button type="submit" class="btn btn-sm btn-success u_bt del_success">删除</button>
+                                                        {/if}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </form>
+                                        </table>
+                                    </div>
+                                    <div class="fixed-table-pagination" style="display: block;">
+                                        <div class="pull-left pagination-detail">
+                                            {$page}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                                
+<script>
+layui.use(['form'], function(){
+    var form = layui.form;
+});
+// 预览
+function details(href) {
+	layer.open({
+		type: 2,
+		title: '预览管理员操作日志详情',
+		shadeClose: true,
+		shade: false,
+		maxmin: true,
+		area: ['750px', '100%'],
+		content: href
+	});
+}
+
+function selectAll(id) {
+    var obj = document.getElementsByTagName('input');
+    for (i = 0; i < obj.length; i++ ) {
+		if(obj[i].className=="ids"){
+        	obj[i].checked = id.checked;
+		}
+    }
+}
+</script>

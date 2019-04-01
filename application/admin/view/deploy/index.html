@@ -1,0 +1,756 @@
+<style>
+.layui-form-label {
+    width: 150px!important;
+}
+.layui-input-block {
+    margin-left: 150px;
+}
+.tab-content>.active{
+  display: block!important;
+}
+.bor{border: 0px;background: #e6e6e6;}
+
+.layui-input-block .col-md-6{width: 50%}
+#warning .layui-form-select{float: left;width: 20%;}
+</style>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content-wrapper2">
+
+    <div class="content">
+        <div class="panel panel-default panel-intro">
+            <div class="panel-heading">
+                <div class="panel-lead">
+                    <em>
+                        API配置管理
+                    </em>
+                    全站的所有API参数都在这里统一管理。
+                </div>
+                <!--tab切换-->
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#sms" data-toggle="tab">
+                            短信设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#two" data-toggle="tab">
+                            邮箱设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#qiniu" data-toggle="tab">
+                            七牛云OSS设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#weixin" data-toggle="tab">
+                            微信开发设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#weixinpay" data-toggle="tab">
+                            微信支付设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#kuaidi" data-toggle="tab">
+                            快递查询设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#oauth" data-toggle="tab">
+                            第三方登录设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#warning" data-toggle="tab">
+                            系统警报设置
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div id="myTabContent" class="tab-content">
+                    <!--短信设置-->
+                    <div class="tab-pane fade active in" id="sms">
+                        <div class="col-md-6">
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>短信设置</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">切换供应商</label>
+                                    <div class="layui-input-block">
+                                        <select name="sms_status">
+                                            <option value="0" {eq name="info.sms_status" value="0"}selected{/eq}>关闭短信接口</option>
+                                            <option value="1" {eq name="info.sms_status" value="1"}selected{/eq}>秒嘀短信</option>
+                                            <option value="2" {eq name="info.sms_status" value="2"}selected{/eq}>阿里大鱼</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <h3>秒嘀短信</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">ACCOUNT SID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="miaodi_account_sid" class="layui-input" value="{$info.miaodi_account_sid}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">AUTH TOKEN</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="miaodi_auth_token"  class="layui-input" value="{$info.miaodi_auth_token}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">模板ID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="miaodi_template_id" class="layui-input" value="{$info.miaodi_template_id}">
+                                    </div>
+                                </div>
+                                
+                                <h3>阿里大鱼</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">APP KEY</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="alidayu_app_key" class="layui-input" value="{$info.alidayu_app_key}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">SECRET KEY</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="alidayu_secret_key"  class="layui-input" value="{$info.alidayu_secret_key}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">短信签名</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="alidayu_sign_name" class="layui-input" value="{$info.alidayu_sign_name}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">模板ID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="alidayu_code" class="layui-input" value="{$info.alidayu_code}">
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--邮箱设置-->
+                    <div class="tab-pane fade" id="two">
+                        <div class="col-md-6">
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>邮箱设置</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">邮箱账号</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="email_name" class="layui-input" value="{$info.email_name}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">邮箱密码</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="email_pwd"  class="layui-input" value="{$info.email_pwd}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">服务商域名</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="email_host" class="layui-input" value="{$info.email_host}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">邮箱端口</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="email_port" class="layui-input" value="{$info.email_port}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">字符集</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="email_charset" class="layui-input" value="{$info.email_charset}">
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--七牛云OSS设置-->
+                    <div class="tab-pane fade" id="qiniu">
+                        <div class="col-md-6">
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>七牛云OSS设置</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">上传大小限制</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="qiniu_size"  class="layui-input" value="{$info.qiniu_size}" placeholder="例如：1.2M">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">上传类型限制</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="qiniu_class"  class="layui-input" value="{$info.qiniu_class}" placeholder="使用,号分割">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">是否压缩图片</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="qiniu_zip" lay-skin="switch" lay-text="压缩|关闭" value="1" {eq name="info.qiniu_zip" value="1"}checked{/eq}>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">是否开启七牛云</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="qiniu_status" lay-skin="switch" lay-text="开启|关闭" value="1" {eq name="info.qiniu_status" value="1"}checked{/eq}>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">ACCESS KEY</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="qiniu_access_key" class="layui-input" value="{$info.qiniu_access_key}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">SECRET KEY</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="qiniu_secret_key" class="layui-input" value="{$info.qiniu_secret_key}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">七牛云空间名</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="qiniu_space" class="layui-input" value="{$info.qiniu_space}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">七牛云预览网址</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="qiniu_website" class="layui-input" placeholder="末尾带/" value="{$info.qiniu_website}">
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <!--微信开发设置-->
+                    <div class="tab-pane fade" id="weixin">
+                        <div class="col-md-6">
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>微信开发设置</h3>
+                                <hr class="layui-bg-blue">
+                                
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">微信认证地址为：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text"  class="layui-input bor" value="你的网址/admin.php/common/weixin_vif" disabled>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">是否通过微信认证</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="weixin_vif"" lay-skin="switch" lay-text="是|否" value="1" {eq name="info.weixin_vif" value="1"}checked{/eq}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">JunCMS自动回复</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="weixin_auto"" lay-skin="switch" lay-text="开启|关闭" value="1" {eq name="info.weixin_auto" value="1"}checked{/eq}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">微信登录授权方式</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="weixin_login_ype"" lay-skin="switch" lay-text="静默|动态" value="1" {eq name="info.weixin_login_ype" value="1"}checked{/eq}>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">DE_BUG模式</label>
+                                    <div class="layui-input-block">
+                                        <input type="radio" name="weixin_debug" value="1" title="不追加日志" {eq name="info.weixin_debug" value="1"}checked{/eq}>
+                                        <input type="radio" name="weixin_debug" value="2" title="追加日志" {eq name="info.weixin_debug" value="2"}checked{/eq}>
+                                        <input type="radio" name="weixin_debug" value="3" title="不生成日志" {eq name="info.weixin_debug" value="3"}checked{/eq}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">APP ID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_appid"  class="layui-input" value="{$info.weixin_appid}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">APP SECRET</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_appsecret"  class="layui-input" value="{$info.weixin_appsecret}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Token令牌</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_token"  class="layui-input" value="{$info.weixin_token}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">EncodingAESKey</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_aeskey"  class="layui-input" value="{$info.weixin_aeskey}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">一次性订阅模版ID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_moban_id"  class="layui-input" value="{$info.weixin_moban_id}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">普通AcToken缓存有效期(S)</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_actoken_time"  class="layui-input" value="{$info.weixin_actoken_time}" placeholder="注意：最大不能超过6600秒">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">
+                                    微信自定义菜单
+                                    <button type="button" onclick="weixin_save();" class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal" style="margin-bottom:3px">更新微信菜单</button>
+                                    <button type="button" onclick="weixin_laqu();" class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal" style="margin-bottom:3px">拉取微信菜单</button>
+                                    <button type="button" onclick="weixin_delete();" class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">删除微信菜单</button>
+                                    </label>
+                                    <div class="layui-input-block">
+                                    <textarea style="height:200px" name="weixin_menu" id="weixin_menu" class="layui-input">{$info.weixin_menu}</textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--微信支付设置-->
+                    <div class="tab-pane fade" id="weixinpay">
+                        <div>
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>微信支付设置</h3>
+                                <hr class="layui-bg-blue">
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">APP ID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" class="layui-input bor col-md-6" value="{$info.weixin_appid}" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">APP SECRET</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" class="layui-input bor col-md-6" value="{$info.weixin_appsecret}" disabled>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">错误上报等级</label>
+                                    <div class="layui-input-block">
+                                        <input type="radio" name="weixin_level" value="0" title="关闭上报" {eq name="info.weixin_level" value="0"}checked{/eq}>
+                                        <input type="radio" name="weixin_level" value="1" title="仅错误出错上报" {eq name="info.weixin_level" value="1"}checked{/eq}>
+                                        <input type="radio" name="weixin_level" value="2" title="全量上报" {eq name="info.weixin_level" value="2"}checked{/eq}>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">JSAPI支付回调地址</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_jsapi_return"  class="layui-input col-md-6" value="{$info.weixin_jsapi_return}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">扫码支付模式二-支付回调地址</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_qrcode_return"  class="layui-input col-md-6" value="{$info.weixin_qrcode_return}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">商户号ID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_mchid"  class="layui-input col-md-6" value="{$info.weixin_mchid}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">支付密钥</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_key"  class="layui-input col-md-6" value="{$info.weixin_key}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">cert证书地址</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="weixin_sslcert_path"  class="layui-input col-md-6" value="{$info.weixin_sslcert_path}" placeholder="注意：是绝对地址">
+                                        <button type="button" id="cert_file" class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal" style="margin: 4px 0 0 10px">上传cert证书</button>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">key证书地址</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="weixin_sslkey_path"  class="layui-input col-md-6" value="{$info.weixin_sslkey_path}" placeholder="注意：是绝对地址">
+                                        <button type="button" id="key_file" class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal" style="margin: 4px 0 0 10px">上传key证书</button>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">CURL代理IP</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_curl_host"  class="layui-input col-md-6" value="{$info.weixin_curl_host}" placeholder="注意：不开代理是0.0.0.0">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">CURL代理端口号</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="weixin_curl_port"  class="layui-input col-md-6" value="{$info.weixin_curl_port}" placeholder="注意：不开代理是0">
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--快递查询设置-->
+                    <div class="tab-pane fade" id="kuaidi">
+                        <div class="col-md-6">
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>快递查询设置</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">切换供应商</label>
+                                    <div class="layui-input-block">
+                                        <select name="express_status">
+                                            <option value="0" {eq name="info.express_status" value="0"}selected{/eq}>关闭快递查询接口</option>
+                                            <option value="1" {eq name="info.express_status" value="1"}selected{/eq}>快递100</option>
+                                            <option value="2" {eq name="info.express_status" value="2"}selected{/eq}>kdcx.cn</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <!--第三方登录设置-->
+                    <div class="tab-pane fade" id="oauth">
+                        <div class="col-md-6">
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>第三方登录设置</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">统一回调地址</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_url"  class="layui-input" value="{$info.oauth_url}" placeholder="需要带https(http)://  同时url不能带?号">
+                                    </div>
+                                </div>
+
+                                <h3>神牛教 <a style="font-size: 14px;" href="https://xiuxian.junphp.com/oauth2/doc.html" target="_blank">- 官方文档</a></h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">APPID</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_sn_appid" class="layui-input" value="{$info.oauth_sn_appid}">
+                                    </div>
+                                </div>
+
+                                <h3>百度 <a style="font-size: 14px;" href="http://developer.baidu.com/wiki/index.php?title=%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3%E9%A6%96%E9%A1%B5/%E7%99%BE%E5%BA%A6%E5%B8%90%E5%8F%B7%E8%BF%9E%E6%8E%A5/%E7%99%BE%E5%BA%A6%E5%B8%90%E5%8F%B7%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97" target="_blank">- 官方文档</a></h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Client Secret</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_bd_client_secret" class="layui-input" value="{$info.oauth_bd_client_secret}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Client Id</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_bd_client_id" class="layui-input" value="{$info.oauth_bd_client_id}">
+                                    </div>
+                                </div>
+
+                                <h3>Github <a style="font-size: 14px;" href="https://www.jianshu.com/p/613ed2a9f768" target="_blank">- 民间文档</a></h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Client Secret</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_git_client_secret" class="layui-input" value="{$info.oauth_git_client_secret}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Client Id</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_git_client_id" class="layui-input" value="{$info.oauth_git_client_id}">
+                                    </div>
+                                </div>
+
+                                <h3>微博 <a style="font-size: 14px;" href="http://open.weibo.com/wiki/%E6%8E%88%E6%9D%83%E6%9C%BA%E5%88%B6#.E5.BA.94.E7.94.A8.E5.9C.BA.E6.99.AF" target="_blank">- 官方文档</a></h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Client Secret</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_wb_client_secret" class="layui-input" value="{$info.oauth_wb_client_secret}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Client Id</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="oauth_wb_client_id" class="layui-input" value="{$info.oauth_wb_client_id}">
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--系统警报设置-->
+                    <div class="tab-pane fade" id="warning">
+                        <div class="col-md-6">
+                            <form class="layui-form" action="{:url('upd')}" method="POST">
+                                <h3>接收警报设置</h3>
+                                <hr class="layui-bg-blue">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">接收警报的邮箱</label>
+                                    <div class="layui-input-block">
+                                    <input type="text" name="warning_email"  class="layui-input" value="{$info.warning_email}">
+                                    </div>
+                                </div>
+
+                                <h3>流量警报设置</h3>
+                                <hr class="layui-bg-blue">
+
+                                
+                                
+                                <div class="layui-form-item" style="display:none" id="warning_display_1">
+                                    <label class="layui-form-label"> </label>
+                                    <div class="layui-input-block">
+                                        注意：<br/>
+                                        1、设置的峰值最大为1000<br/>
+                                        2、假设，检测总流量为 300MB，那么峰值类型最大只能设置为MB，否则监控无效<br/>
+                                        3、邮件通知依赖邮件API，需要先配置好 【邮箱设置】
+                                        <hr class="layui-bg-red">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">警报触发峰值(1S)</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="warning_value" class="layui-input" value="{$info.warning_value}" placeholder="点击检测按钮查看总流量" style="float: left;width: 30%;">
+                                        <select name="warning_type">
+                                            <option value="1" {eq name="info.warning_type" value="1"}selected{/eq}>KB</option>
+                                            <option value="2" {eq name="info.warning_type" value="2"}selected{/eq}>MB</option>
+                                            <option value="3" {eq name="info.warning_type" value="3"}selected{/eq}>GB</option>
+                                            <option value="4" {eq name="info.warning_type" value="4"}selected{/eq}>TB</option>
+                                        </select> 
+                                        <button type="button" id="warning_vif" class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal" style="margin: 4px 0 0 10px">检测</button>
+                                        <button type="button" id="warning_display" class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal" style="margin: 4px 0 0 10px">查看注意事项</button>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">第N次触发峰值</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="warning_num" class="layui-input" value="{$info.warning_num}" placeholder="建议：设置为0">
+                                    </div>
+                                </div>
+
+                                
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-lg layui-btn-normal">立即提交</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+layui.use(['form'], function(){
+    var form = layui.form;
+});
+
+$('#warning_vif').click(function(){
+    $.thinkmimi({Content : '系统检测中...',Type: 1,Align: 'right',OutTime: 2000,});
+    $.ajax({
+        type: 'post',
+        data: {},
+        url: "{:url('common/vif_flow')}",
+        success: function(data) {
+          $.thinkmimi({Content : data,Type: 1,Align: 'right',OutTime: 2000,});
+      }
+    });
+})
+$('#warning_display').click(function(){
+    if ($('#warning_display_1').css('display') == 'none') {
+        $('#warning_display_1').show();
+    } else {
+        $('#warning_display_1').hide();
+    }
+})
+
+
+function weixin_save(){
+    var menu = $('#weixin_menu').val();
+    $.thinkmimi({Content : '系统处理中...',Type: 1,Align: 'right',OutTime: 2000,});
+
+    $.ajax({
+        type: 'post',
+        data: {'menu':menu},
+        url: "{:url('wx_menu_save')}",
+        success: function(data) {
+          var array = eval('(' + data+ ')');
+          if (array['code'] == '01') {
+            $.thinkmimi({Content : array['msg'],Type: 2,Align: 'right',OutTime: 2000,});
+          } else {
+            $.thinkmimi({Content : array['msg'],Type: 1,Align: 'right',OutTime: 2000,});
+          }
+      }
+    });
+}
+
+function weixin_laqu(){
+    $.thinkmimi({Content : '系统处理中...',Type: 1,Align: 'right',OutTime: 2000,});
+
+    $.ajax({
+        type: 'post',
+        data: {},
+        url: "{:url('wx_menu_laqu')}",
+        success: function(data) {
+          var array = eval('(' + data+ ')');
+          if (array['code'] == '01') {
+            $.thinkmimi({Content : array['msg'],Type: 2,Align: 'right',OutTime: 2000,});
+          } else {
+            $.thinkmimi({Content : array['msg'],Type: 1,Align: 'right',OutTime: 2000,});
+            $('#weixin_menu').val(array['data']);
+          }
+      }
+    });
+}
+
+function weixin_delete(){
+    $.thinkmimi({Content : '系统处理中...',Type: 1,Align: 'right',OutTime: 2000,});
+
+    $.ajax({
+        type: 'post',
+        data: {},
+        url: "{:url('wx_menu_delete')}",
+        success: function(data) {
+          var array = eval('(' + data+ ')');
+          if (array['code'] == '01') {
+            $.thinkmimi({Content : array['msg'],Type: 2,Align: 'right',OutTime: 2000,});
+          } else {
+            $.thinkmimi({Content : array['msg'],Type: 1,Align: 'right',OutTime: 2000,});
+            $('#weixin_menu').val('');
+          }
+      }
+    });
+}
+layui.use('upload', function(){
+    var upload = layui.upload;
+    var uploadCert = upload.render({
+        elem: '#cert_file' //绑定元素
+        , url: '{:url("upd")}' //上传接口
+        , accept: 'file'
+        , exts: 'pem'
+        , data: {
+            type: '1'
+        }
+        , done: function (res) {
+            //上传完毕回调
+            if (res.code != '00') {
+                $.thinkmimi({Content : res.msg,Type: 2,Align: 'right',OutTime: 2000,});
+            } else {
+                $.thinkmimi({Content : res.msg,Type: 1,Align: 'right',OutTime: 2000,});
+                $("input[name=weixin_sslcert_path]").val(res.data);
+            }
+        }
+        , error: function () {
+            //请求异常回调
+        }
+    });
+    var uploadCert = upload.render({
+        elem: '#key_file' //绑定元素
+        , url: '{:url("upd")}' //上传接口
+        , accept: 'file'
+        , exts: 'pem'
+        , data: {
+            type: '2'
+        }
+        , done: function (res) {
+            //上传完毕回调
+            if (res.code != '00') {
+                $.thinkmimi({Content : res.msg,Type: 2,Align: 'right',OutTime: 2000,});
+            } else {
+                $.thinkmimi({Content : res.msg,Type: 1,Align: 'right',OutTime: 2000,});
+                $("input[name=weixin_sslkey_path]").val(res.data);
+            }
+        }
+        , error: function () {
+            //请求异常回调
+        }
+    });
+});
+</script>

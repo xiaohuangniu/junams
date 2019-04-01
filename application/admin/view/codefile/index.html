@@ -1,0 +1,416 @@
+<style>
+.layui-icon-close{color:red;font-weight: bold;}
+.layui-icon-ok{color:#5FB878;font-weight: bold;}
+</style>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	
+	<!-- END RIBBON -->
+	<div class="content">
+		<div class="panel panel-default panel-intro">
+			<div class="panel-heading" style="background: #fff;">
+				<div class="panel-lead">
+					<em>CMS - 代码管理</em>
+                    注意：如果您未选择项目，请先前往【项目管理】模块，创建或选中一个项目为当前模型绑定对象。
+				</div>
+			</div>
+
+
+			<div class="panel-heading">
+				<div class="panel-lead">
+					<em>控制器文件</em>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="one">
+						<div class="widget-body no-padding">
+							<div class="bootstrap-table">
+								
+								<div class="fixed-table-toolbar">
+									<div class="bs-bars pull-left">
+										<div id="toolbar" class="toolbar">
+											<a href="javascript:window.location.reload();" class="btn btn-primary btn-refresh" title="刷新">
+												<i class="fa fa-refresh"></i>
+											</a>
+										</div>
+									</div>
+									<div class="columns columns-right btn-group pull-right">
+										<div class="keep-open btn-group" title="列">
+											<button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+												<i class="glyphicon glyphicon-th icon-th"></i>
+												<span class="caret"></span>
+											</button>
+												<ul class="dropdown-menu" id="table_menu">
+												
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="fixed-table-container" style="padding-bottom: 0px;">
+									<div class="fixed-table-body">
+										<table id="table" class="table table-striped table-bordered table-hover" width="100%">
+											<thead>
+												<tr>
+													<th data-status="1" ><div class="th-inner" style="text-align: left;">文件路径</div></th>
+													<th data-status="1" width="200"><div class="th-inner">关键词</div></th>
+													<th data-status="1" width="250"><div class="th-inner">栏目名称</div></th>
+													<th data-status="1" width=""><div class="th-inner">描述</div></th>
+													<th data-status="1" width="80"><div class="th-inner">文件大小</div></th>
+													<th data-status="1" width="150"><div class="th-inner">修改时间</div></th>
+													<th data-status="1" width="120"><div class="th-inner">操作</div></th>
+												</tr>
+											</thead>
+											
+											<tbody id="content-main">
+												{php}$file = $controller.'Index.php';{/php}
+												{if condition="file_exists($file)"}
+													<tr>
+														<td align="left">{$file}</td>
+														<td align="center">Index</td>
+														<td align="center">主页</td>
+														<td align="center">不属于ILDM</td>
+														<td align="center">{:formatBytes(filesize($file))}</td>
+														<td align="center">{:time_tran(filemtime($file))}</td>
+														<td style="text-align: center; vertical-align: middle; ">
+															
+															{if condition="$adminController->vif('codefile','upd')"}
+															<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+																<i class="fa fa-pencil"></i>
+															</a>
+															{/if}
+														</td>
+													</tr>
+												{/if}
+												{foreach name="list" item="v"}
+												{php}$file = $controller.$v['ic_name'].'.php';{/php}
+												<tr>
+													<td align="left">{$file}</td>
+													<td align="center">{$v.ic_name}</td>
+													<td align="center">{$v.ic_title}</td>
+													<td align="center">{$v.ic_des}</td>
+													<td align="center">{:formatBytes(filesize($file))}</td>
+													<td align="center">{:time_tran(filemtime($file))}</td>
+													<td style="text-align: center; vertical-align: middle; ">
+														
+														{if condition="$adminController->vif('codefile','upd')"}
+														<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+															<i class="fa fa-pencil"></i>
+														</a>
+														{/if}
+													</td>
+												</tr>
+												{/foreach}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="panel-heading">
+				<div class="panel-lead">
+					<em>视图文件 - PC端</em>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="one">
+						<div class="widget-body no-padding">
+							<div class="bootstrap-table">
+								
+								<div class="fixed-table-container" style="padding-bottom: 0px;">
+									<div class="fixed-table-body">
+										<table id="table" class="table table-striped table-bordered table-hover" width="100%">
+											<thead>
+												<tr>
+													<td ><div class="th-inner" style="text-align: left;font-weight: bold;">文件路径</div></td>
+													<td width="200"><div class="th-inner" style="text-align: center;font-weight: bold;">关键词</div></td>
+													<td width="250"><div class="th-inner" style="text-align: center;font-weight: bold;">栏目名称</div></td>
+													<td width=""><div class="th-inner" style="text-align: center;font-weight: bold;">描述</div></td>
+													<td width="80"><div class="th-inner" style="text-align: center;font-weight: bold;">文件大小</div></td>
+													<td width="150"><div class="th-inner" style="text-align: center;font-weight: bold;">修改时间</div></td>
+													<td width="120"><div class="th-inner" style="text-align: center;font-weight: bold;">操作</div></td>
+												</tr>
+											</thead>
+											
+											<tbody id="content-main">
+												{php}$file = $pc.'index'.DS.'index.html';{/php}
+												{if condition="file_exists($file)"}
+												<tr>
+													<td align="left">{$file}</td>
+													<td align="center">Index</td>
+													<td align="center">主页</td>
+													<td align="center">不属于ILDM</td>
+													<td align="center">{:formatBytes(filesize($file))}</td>
+													<td align="center">{:time_tran(filemtime($file))}</td>
+													<td style="text-align: center; vertical-align: middle; ">
+														
+														{if condition="$adminController->vif('codefile','upd')"}
+														<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+															<i class="fa fa-pencil"></i>
+														</a>
+														{/if}
+													</td>
+												</tr>
+												{/if}
+												{foreach name="list" item="v"}
+												{php}
+													$file  = $pc.strtolower($v['ic_name']).DS.'index.html';
+													$file2 = $pc.strtolower($v['ic_name']).DS.'showlist.html';
+													$file3 = $pc.strtolower($v['ic_name']).DS.'details.html';
+													$file4 = $pc.strtolower($v['ic_name']).DS.'marketing.html';
+												{/php}
+												<tr>
+													<td align="left">{$file}</td>
+													<td align="center">{$v.ic_name}/index</td>
+													<td align="center">{$v.ic_title}-主页</td>
+													<td align="center">{$v.ic_des}</td>
+													<td align="center">{:formatBytes(filesize($file))}</td>
+													<td align="center">{:time_tran(filemtime($file))}</td>
+													<td style="text-align: center; vertical-align: middle; ">
+														
+														{if condition="$adminController->vif('codefile','upd')"}
+														<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+															<i class="fa fa-pencil"></i>
+														</a>
+														{/if}
+													</td>
+												</tr>
+												<tr>
+													<td align="left">{$file2}</td>
+													<td align="center">{$v.ic_name}/showlist</td>
+													<td align="center">{$v.ic_title}-列表页</td>
+													<td align="center">{$v.ic_des}</td>
+													<td align="center">{:formatBytes(filesize($file2))}</td>
+													<td align="center">{:time_tran(filemtime($file2))}</td>
+													<td style="text-align: center; vertical-align: middle; ">
+														
+														{if condition="$adminController->vif('codefile','upd')"}
+														<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file2)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+															<i class="fa fa-pencil"></i>
+														</a>
+														{/if}
+													</td>
+												</tr>
+												<tr>
+													<td align="left">{$file3}</td>
+													<td align="center">{$v.ic_name}/details</td>
+													<td align="center">{$v.ic_title}-详情页</td>
+													<td align="center">{$v.ic_des}</td>
+													<td align="center">{:formatBytes(filesize($file3))}</td>
+													<td align="center">{:time_tran(filemtime($file3))}</td>
+													<td style="text-align: center; vertical-align: middle; ">
+														
+														{if condition="$adminController->vif('codefile','upd')"}
+														<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file3)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+															<i class="fa fa-pencil"></i>
+														</a>
+														{/if}
+													</td>
+												</tr>
+												<tr>
+													<td align="left">{$file4}</td>
+													<td align="center">{$v.ic_name}/marketing</td>
+													<td align="center">{$v.ic_title}-营销页</td>
+													<td align="center">{$v.ic_des}</td>
+													<td align="center">{:formatBytes(filesize($file4))}</td>
+													<td align="center">{:time_tran(filemtime($file4))}</td>
+													<td style="text-align: center; vertical-align: middle; ">
+														
+														{if condition="$adminController->vif('codefile','upd')"}
+														<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file4)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+															<i class="fa fa-pencil"></i>
+														</a>
+														{/if}
+													</td>
+												</tr>
+												{/foreach}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="panel-heading">
+				<div class="panel-lead">
+					<em>视图文件 - WAP端</em>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="one">
+						<div class="widget-body no-padding">
+							<div class="bootstrap-table">
+								
+								<div class="fixed-table-container" style="padding-bottom: 0px;">
+									<div class="fixed-table-body">
+										<table id="table" class="table table-striped table-bordered table-hover" width="100%">
+											<thead>
+												<tr>
+													<td ><div class="th-inner" style="text-align: left;font-weight: bold;">文件路径</div></td>
+													<td width="200"><div class="th-inner" style="text-align: center;font-weight: bold;">关键词</div></td>
+													<td width="250"><div class="th-inner" style="text-align: center;font-weight: bold;">栏目名称</div></td>
+													<td width=""><div class="th-inner" style="text-align: center;font-weight: bold;">描述</div></td>
+													<td width="80"><div class="th-inner" style="text-align: center;font-weight: bold;">文件大小</div></td>
+													<td width="150"><div class="th-inner" style="text-align: center;font-weight: bold;">修改时间</div></td>
+													<td width="120"><div class="th-inner" style="text-align: center;font-weight: bold;">操作</div></td>
+												</tr>
+											</thead>
+											
+											<tbody id="content-main">
+												{php}$file = $wap.'index'.DS.'index.html';{/php}
+												{if condition="file_exists($file)"}
+												<tr>
+													<td align="left">{$file}</td>
+													<td align="center">Index</td>
+													<td align="center">主页</td>
+													<td align="center">不属于ILDM</td>
+													<td align="center">{:formatBytes(filesize($file))}</td>
+													<td align="center">{:time_tran(filemtime($file))}</td>
+													<td style="text-align: center; vertical-align: middle; ">
+														
+														{if condition="$adminController->vif('codefile','upd')"}
+														<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+															<i class="fa fa-pencil"></i>
+														</a>
+														{/if}
+													</td>
+												</tr>
+												{/if}
+												{foreach name="list" item="v"}
+													{if condition="$v['ic_wap'] == 1"}
+														{php}
+															$file  = $wap.strtolower($v['ic_name']).DS.'index.html';
+															$file2 = $wap.strtolower($v['ic_name']).DS.'showlist.html';
+															$file3 = $wap.strtolower($v['ic_name']).DS.'details.html';
+															$file4 = $wap.strtolower($v['ic_name']).DS.'marketing.html';
+														{/php}
+														<tr>
+															<td align="left">{$file}</td>
+															<td align="center">{$v.ic_name}/index</td>
+															<td align="center">{$v.ic_title}-主页</td>
+															<td align="center">{$v.ic_des}</td>
+															<td align="center">{:formatBytes(filesize($file))}</td>
+															<td align="center">{:time_tran(filemtime($file))}</td>
+															<td style="text-align: center; vertical-align: middle; ">
+																
+																{if condition="$adminController->vif('codefile','upd')"}
+																<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+																	<i class="fa fa-pencil"></i>
+																</a>
+																{/if}
+															</td>
+														</tr>
+														<tr>
+															<td align="left">{$file2}</td>
+															<td align="center">{$v.ic_name}/showlist</td>
+															<td align="center">{$v.ic_title}-列表页</td>
+															<td align="center">{$v.ic_des}</td>
+															<td align="center">{:formatBytes(filesize($file2))}</td>
+															<td align="center">{:time_tran(filemtime($file2))}</td>
+															<td style="text-align: center; vertical-align: middle; ">
+																
+																{if condition="$adminController->vif('codefile','upd')"}
+																<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file2)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+																	<i class="fa fa-pencil"></i>
+																</a>
+																{/if}
+															</td>
+														</tr>
+														<tr>
+															<td align="left">{$file3}</td>
+															<td align="center">{$v.ic_name}/details</td>
+															<td align="center">{$v.ic_title}-详情页</td>
+															<td align="center">{$v.ic_des}</td>
+															<td align="center">{:formatBytes(filesize($file3))}</td>
+															<td align="center">{:time_tran(filemtime($file3))}</td>
+															<td style="text-align: center; vertical-align: middle; ">
+																
+																{if condition="$adminController->vif('codefile','upd')"}
+																<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file3)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+																	<i class="fa fa-pencil"></i>
+																</a>
+																{/if}
+															</td>
+														</tr>
+														<tr>
+															<td align="left">{$file4}</td>
+															<td align="center">{$v.ic_name}/marketing</td>
+															<td align="center">{$v.ic_title}-营销页</td>
+															<td align="center">{$v.ic_des}</td>
+															<td align="center">{:formatBytes(filesize($file4))}</td>
+															<td align="center">{:time_tran(filemtime($file4))}</td>
+															<td style="text-align: center; vertical-align: middle; ">
+																
+																{if condition="$adminController->vif('codefile','upd')"}
+																<a href="javascript:upd('{:url('upd', ['name'=>url_tran($file4)])}');" class="btn btn-xs btn-success btn-editone" title="编辑">
+																	<i class="fa fa-pencil"></i>
+																</a>
+																{/if}
+															</td>
+														</tr>
+													{/if}
+												{/foreach}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+
+<script>
+{if condition="!$item"}
+$.thinkmimi({Content : '请先前往项目管理模块，选中一个项目！', Type:2, Align:'right', OutTime:4000});	
+{/if}
+layui.use(['form'], function(){
+  var form = layui.form;
+});
+
+// 修改
+function upd(href) {
+	layer.open({
+		type: 2,
+		title: '修改代码',
+		shadeClose: true,
+		shade: false,
+		maxmin: true,
+		area: ['100%', '100%'],
+		btn: ['确认', '取消'],
+		content: href,
+		yes: function(index, layero) {
+			var _this = layero.find('iframe')[0];
+			var bool  = _this.contentWindow.doSubimt();
+			if (bool !== false) {
+				$.thinkmimi({Content : bool['msg'],Type : 1,Align:'right',OutTime:2000,});
+				menu_run();
+				layer.closeAll();
+				window.setTimeout(function(){
+					window.location.reload();
+				}, 700);
+			}
+		},
+	});
+}
+</script>

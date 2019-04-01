@@ -1,0 +1,179 @@
+	
+<script src="__ADMIN__/js/echarts.min.js"></script>	
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	
+	<!-- END RIBBON -->
+	<div class="content">
+		<div class="panel panel-default panel-intro">
+			<div class="panel-heading">
+				<div class="panel-lead">
+					<em>
+						流量监控图表
+					</em>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="one">
+						<div class="widget-body no-padding">
+							<div class="bootstrap-table">
+
+								<div class="fixed-table-toolbar">
+									<div class="bs-bars pull-left">
+										<div id="toolbar" class="toolbar">
+											<a href="javascript:window.location.reload();" class="btn btn-primary btn-refresh" title="刷新">
+												<i class="fa fa-refresh"></i>
+                                            </a>
+										</div>
+									</div>
+								</div>
+								<div class="fixed-table-container">
+									<div class="fixed-table-body">
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+		
+<script type="text/javascript">
+// data存储器
+var flow_data = [];
+// 对齐容器
+var obj_arr = [];
+
+// 创建容器
+$.ajaxSetup({ 
+    async : false 
+}); 
+$.post("{:url('database/flow')}").done(function (data) {
+	$.each($.parseJSON(data), function(name,value) {
+		var html = '<div id="'+name+'" style="width: 100%;height:300px; margin-bottom: 50px;"></div>';
+		$('.fixed-table-container .fixed-table-body').append(html);
+		// 初始化echarts实例
+		var myChart = echarts.init(document.getElementById(name));
+		// 等待动画
+		myChart.showLoading();
+		// 实例记录进容器
+		obj_arr[name] = myChart;
+		// 内容记录容器
+		flow_data[name] = [];
+		flow_data[name]['time'] = [];
+		flow_data[name]['c_flow'] = [];
+		flow_data[name]['r_flow'] = [];
+		flow_data[name]['time'].push(value.time);
+		flow_data[name]['c_flow'].push(value.c_flow);
+		flow_data[name]['r_flow'].push(value.r_flow);
+	});
+});
+
+// 定时请求监控
+setInterval(function(){
+	$.post("{:url('database/flow')}").done(function (data) {
+		var colors = ['#5793f3', '#d14a61', '#675bba'];
+		// 解析json
+		$.each($.parseJSON(data), function(name,value) {
+			// 内容加入容器
+			flow_data[name]['time'].push(value.time);
+			flow_data[name]['c_flow'].push(value.c_flow);
+			flow_data[name]['r_flow'].push(value.r_flow);
+			
+			option = {
+				title:{
+					text: name+'网卡 流程监控'
+				},
+				color: colors,
+
+				tooltip: {
+					trigger: 'none',
+					axisPointer: {
+						type: 'cross'
+					}
+				},
+				legend: {
+					data:['出网流量('+value.title+')', '入网流量('+value.title+')']
+				},
+				grid: {
+					top: 70,
+					bottom: 50
+				},
+				xAxis: [
+					{
+						type: 'category',
+						axisTick: {
+							alignWithLabel: true
+						},
+						axisLine: {
+							onZero: false,
+							lineStyle: {
+								color: colors[1]
+							}
+						},
+						axisPointer: {
+							label: {
+								formatter: function (params) {
+									return '流量  ' + params.value
+										+ (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+								}
+							}
+						},
+						data: flow_data[name]['time']
+					},
+					{
+						type: 'category',
+						axisTick: {
+							alignWithLabel: true
+						},
+						axisLine: {
+							onZero: false,
+							lineStyle: {
+								color: colors[0]
+							}
+						},
+						axisPointer: {
+							label: {
+								formatter: function (params) {
+									return '流量  ' + params.value
+										+ (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+								}
+							}
+						},
+						data: flow_data[name]['time']
+					}
+				],
+				yAxis: [
+					{
+						type: 'value'
+					}
+				],
+				series: [
+					{
+						name:'出网流量('+value.title+')',
+						type:'line',
+						xAxisIndex: 1,
+						smooth: true,
+						data: flow_data[name]['c_flow']
+					},
+					{
+						name:'入网流量('+value.title+')',
+						type:'line',
+						smooth: true,
+						data: flow_data[name]['r_flow']
+					}
+				]
+			};
+
+
+			// 关闭加载动画
+			obj_arr[name].hideLoading();
+			// 使用刚指定的配置项和数据显示图表。
+			obj_arr[name].setOption(option);
+		});
+	});
+}, 2000);
+</script>

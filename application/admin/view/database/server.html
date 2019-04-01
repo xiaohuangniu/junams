@@ -1,0 +1,367 @@
+<style>
+.job{height:30px; border:1px #ccc solid;color: #fff; margin:5px; float:left; text-align:center; line-height:20px; background:#009688; position:relative; padding:5px; cursor:pointer}
+td,th{font-size:13px}
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {border: 1px solid #e8e8e8;text-align: left;}
+.layui-btn-sm {
+    height: 20px;
+    line-height: 20px;
+    padding: 0 10px;
+    font-size: 13px;
+    margin: 2px 4px;
+    font-weight: 100;
+}
+</style>
+        
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- END RIBBON -->
+        <div class="content">
+            <div class="panel panel-default panel-intro">
+                <div class="panel-heading">
+                    <div class="panel-lead">
+                        <em>
+                            服务器信息
+                        </em>
+                        ...
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="one">
+                           
+                            <div class="org-view-wrapper card table-tray">
+
+                                <div class="org-right-col tray-cell j_user">
+                                    <div class="user-sort-view j-user-list">
+                                        <div class="users-list-pinyin"></div>
+                                        <div class="user-sortbar table-tray"><div class="tray-cell" style="width: 300px"></div></div>
+                                        <div id="user-container" class="users-container">
+                                            <div class="bs-example">
+                                                <table class="table table-bordered">
+
+                                                    {if condition="$status != false"}
+                                                    <tbody>
+                                                        <tr><th colspan="8" style="text-align: center">服务器数据</th></tr>
+                                                        <tr>
+                                                            <th>服务器当前时间</th>
+                                                            <th colspan="6">{:date('Y-m-d H:i:s', time())}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>服务器已运行时间</th>
+                                                            <th colspan="6">{$cpu.uptime}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>CPU型号</th>
+                                                            <th colspan="6">
+                                                                {$cpu.cpu.num}核 {$cpu.cpu.model}
+                                                            </th>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th>硬盘使用状况</th>
+                                                            <th colspan="12">
+                                                                <label>总空间 {$disk.t}&nbsp;G，已用 <font color='#333333'><span id="useSpace">{$disk.u}</span></font>&nbsp;G，
+                                                                    空闲 <font color='#333333'><span id="freeSpace">{$disk.f}</span></font>&nbsp;G，
+                                                                    使用率 <span id="hdPercent">{$disk.PCT}</span>%
+                                                                    <div class="layui-progress layui-progress-big" lay-showPercent="true">
+                                                                        <div class="layui-progress-bar layui-bg-blue" lay-percent="{$disk.PCT}%"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>物理内存</th>
+                                                            <th colspan="12">
+                                                                <label>共<font color='#CC0000'>{$cpu.memTotal}</font>
+                                                                    , 已用<font color='#CC0000'><span id="UsedMemory">{$cpu.memUsed}</span></font>
+                                                                    , 空闲<font color='#CC0000'><span id="FreeMemory">{$cpu.memFree}</span></font>
+                                                                    , 使用率<span id="memPercent">{$cpu.memPercent}</span>%
+                                                                    <div class="layui-progress layui-progress-big" lay-showPercent="true">
+                                                                        <div class="layui-progress-bar layui-bg-blue" lay-percent="{$cpu.memPercent}%"></div>
+                                                                    </div>
+                                                                </label>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Cache化内存</th>
+                                                            <th colspan="12">
+                                                                {if condition="!empty($cpu['memCached'])"}
+                                                                <label><span id="CachedMemory">{$cpu.memCached}</span>
+                                                                    , 使用率<span id="memCachedPercent">{$cpu.memCachedPercent}</span>% |
+                                                                    Buffers缓冲为  <span id="Buffers">{$cpu.memBuffers}</span>
+                                                                    <div class="layui-progress layui-progress-big" lay-showPercent="true">
+                                                                        <div class="layui-progress-bar layui-bg-blue" lay-percent="{$cpu.memCachedPercent}%"></div>
+                                                                    </div>
+                                                                </label> 
+                                                                {else/}
+                                                                -
+                                                                {/if}
+                                                            </th>
+                                                        </tr>
+                                
+                                                        <tr>
+                                                            <th>真实内存使用</th>
+                                                            <th colspan="12">
+                                                                {if condition="!empty($cpu['memCached'])"}
+                                                                <label><span id="memRealUsed">{$cpu.memRealUsed}</span>
+                                                                    , 真实内存空闲<span id="memRealFree">{$cpu.memRealFree}</span>
+                                                                    , 使用率<span id="memRealPercent">{$cpu.memRealPercent}</span>%
+                                                                    <div class="layui-progress layui-progress-big" lay-showPercent="true">
+                                                                            <div class="layui-progress-bar layui-bg-blue" lay-percent="{$cpu.memRealPercent}%"></div>
+                                                                        </div>
+                                                                </label> 
+                                                                {else/}
+                                                                -
+                                                                {/if}
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>SWAP区</th>
+                                                            <th colspan="12">
+                                                                {if condition="!empty($cpu['swapTotal'])"}
+                                                                <label>共 {$cpu.swapTotal}
+                                                                    , 已使用<span id="swapUsed">{$cpu.swapUsed}</span>
+                                                                    , 空闲<span id="swapFree">{$cpu.swapFree}</span>
+                                                                    , 使用率<span id="swapPercent">{$cpu.swapPercent}</span>%
+                                                                    <div class="layui-progress layui-progress-big" lay-showPercent="true">
+                                                                            <div class="layui-progress-bar layui-bg-blue" lay-percent="{$cpu.swapPercent}%"></div>
+                                                                        </div>
+                                                                </label> 
+                                                                {else/}
+                                                                -
+                                                                {/if}
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>系统平均负载</th>
+                                                            <th colspan="12">{$cpu.loadAvg}</th>
+                                                        </tr>
+                                                    </tbody>
+                                                    {/if}
+
+                                                    <tbody>
+                                                        <tr><th colspan="8" style="text-align: center">服务器详情</th></tr>
+                                                        <tr>
+                                                            <th>框架版本</th>
+                                                            <th colspan="6">{$data.thinkphp}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>PHP版本</th>
+                                                            <th colspan="6">{$data.php_edition}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Mysql版本</th>
+                                                            <th colspan="6">{$data.mysql}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>PHP内核</th>
+                                                            <th colspan="6">{$data.php_model}</th>
+                                                        </tr>
+                                
+                                                        <tr>
+                                                            <th>本机IP</th>
+                                                            <th colspan="6">{$data.ip}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>项目根目录</th>
+                                                            <th colspan="6">{$data.root_path}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>服务器环境</th>
+                                                            <th colspan="6">{$data.nginx}</th>
+                                                        </tr>
+                                
+                                                        <tr>
+                                                            <th>HTTP协议类型</th>
+                                                            <th colspan="6">{$data.https}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>磁盘使用情况</th>
+                                                            <th colspan="6">{$data.root_statr_size} ({$data.root_end_size})</th>
+                                                        </tr>
+                                                    </tbody>
+
+                                                    <tbody>
+                                                        <tr><th colspan="8" style="text-align: center">PHP已编译模块检测</th></tr>
+                                                        <tr>
+                                                            <th colspan="12">{$phpexts}</th>
+                                                        </tr>
+                                                    </tbody>
+
+                                                    <tbody>
+                                                        <tr><th colspan="8" style="text-align: center">PHP禁用函数</th></tr>
+                                                        <tr>
+                                                            <th colspan="12">{$funs}</th>
+                                                        </tr>
+                                                    </tbody>
+
+                                                    <tbody>
+                                                        <tr><th colspan="8" style="text-align: center">组件支持</th></tr>
+                                                        <tr>
+                                                            <th colspan="">FTP支持：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("ftp_login");?></th>
+                                                            <th colspan="">XML解析支持：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("xml_set_object");?></th>
+                                                            <th colspan="">Session支持：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("session_start");?></th>
+                                                            <th colspan="">Socket支持：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("socket_accept");?></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="">Calendar支持：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun('cal_days_in_month');?></th>
+                                                            <th colspan="">允许URL打开文件：</th>
+                                                            <th colspan=""><?=\org\Cpu::show("allow_url_fopen");?></th>
+                                                            <th colspan="">GD库支持：</th>
+                                                            <th colspan=""><?=\org\Cpu::GetGDVer();?></th>
+                                                            <th colspan="">压缩文件支持(Zlib)：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("gzclose");?></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="">IMAP电子邮件系统函数库：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("imap_close");?></th>
+                                                            <th colspan="">历法运算函数库：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("JDToGregorian");?></th>
+                                                            <th colspan="">正则表达式函数库：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("preg_match");?></th>
+                                                            <th colspan="">WDDX支持：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("wddx_add_vars");?></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="">Iconv编码转换：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("iconv");?></th>
+                                                            <th colspan="">mbstring：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("mb_eregi");?></th>
+                                                            <th colspan="">高精度数学运算：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("bcadd");?></th>
+                                                            <th colspan="">LDAP目录协议：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("ldap_close");?></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="">MCrypt加密处理：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("mcrypt_cbc");?></th>
+                                                            <th colspan="">哈稀计算：</th>
+                                                            <th colspan=""><?=\org\Cpu::isfun("mhash_count");?></th>
+                                                            <th colspan="">-</th>
+                                                            <th colspan="">-</th>
+                                                            <th colspan="">-</th>
+                                                            <th colspan="">-</th>
+                                                        </tr>
+                                                    </tbody>
+
+                                                    <tbody>
+                                                        <tr><th colspan="8" style="text-align: center">PHP相关参数</th></tr>
+                                                        <tr>
+                                                            <th colspan="">PHP运行方式：</th>
+                                                            <th colspan=""><?=strtoupper(php_sapi_name());?></th>
+                                                            <th colspan="">脚本占用最大内存（memory_limit）：</th>
+                                                            <th colspan=""><?=\org\Cpu::show("memory_limit");?></th>
+                                                            <th colspan="">PHP安全模式（safe_mode）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("safe_mode");?></th>
+                                                            <th colspan="">POST方法提交最大限制（post_max_size）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("post_max_size");?></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="">上传文件最大限制（upload_max_filesize）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("upload_max_filesize");?></th>
+                                                            <th colspan="">浮点型数据显示的有效位数（precision）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("precision");?></th>
+                                                            <th colspan="">脚本超时时间（max_execution_time）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("max_execution_time");?>秒</th>
+                                                            <th colspan="">socket超时时间（default_socket_timeout）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("default_socket_timeout");?>秒</th>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th colspan="">dl()函数（enable_dl）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("enable_dl");?></th>
+                                                            <th colspan="">指定包含文件目录（include_path）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("include_path");?></th>
+                                                            <th colspan="">显示错误信息（display_errors）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("display_errors");?></th>
+                                                            <th colspan="">自定义全局变量（register_globals）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("register_globals");?></th>
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <th colspan="">dl()数据反斜杠转义（magic_quotes_gpc）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("magic_quotes_gpc");?></th>
+                                                            <th colspan="">"&lt;?...?&gt;"短标签（short_open_tag）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("short_open_tag");?></th>
+                                                            <th colspan="">"&lt;% %&gt;"ASP风格标记（asp_tags）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("asp_tags");?></th>
+                                                            <th colspan="">忽略重复错误信息（ignore_repeated_errors）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("ignore_repeated_errors");?></th>
+                                                        </tr>
+
+                                                    <tr>
+                                                            <th colspan="">忽略重复的错误源（ignore_repeated_source）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("ignore_repeated_source");?></th>
+                                                            <th colspan="">报告内存泄漏（report_memleaks）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("report_memleaks");?></th>
+                                                            <th colspan="">自动字符串转义（magic_quotes_gpc）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("magic_quotes_gpc");?></th>
+                                                            <th colspan="">外部字符串自动转义（magic_quotes_runtime）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("magic_quotes_runtime");?></th>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th colspan="">打开远程文件（allow_url_fopen）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("allow_url_fopen");?></th>
+                                                            <th colspan="">声明argv和argc变量（register_argc_argv）：</th>
+                                                            <th colspan=""><?=\org\CPU::show("register_argc_argv");?></th>
+                                                            <th colspan="">Cookie 支持：</th>
+                                                            <th colspan=""><?php $strcookies= isset($_COOKIE)?'<font color="green">√</font>': '<font color="red">×</font>';?><?=$strcookies;?></th>
+                                                            <th colspan="">拼写检查（ASpell Library）：</th>
+                                                            <th colspan=""><?=\org\CPU::isfun("aspell_check_raw");?></th>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th colspan="">高精度数学运算（BCMath）：</th>
+                                                            <th colspan=""><?=\org\CPU::isfun("bcadd");?></th>
+                                                            <th colspan="">PREL相容语法（PCRE）：</th>
+                                                            <th colspan=""><?=\org\CPU::isfun("preg_match");?></th>
+                                                            <th colspan="">PDF文档支持：</th>
+                                                            <th colspan=""><?=\org\CPU::isfun("pdf_close");?></th>
+                                                            <th colspan="">SNMP网络管理协议：</th>
+                                                            <th colspan=""><?=\org\CPU::isfun("snmpget");?></th>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th colspan="">VMailMgr邮件处理：</th>
+                                                            <th colspan=""><?=\org\CPU::isfun("vm_adduser");?></th>
+                                                            <th colspan="">Curl支持：</th>
+                                                            <th colspan=""><?=\org\CPU::isfun("curl_init");?></th>
+                                                            <th colspan="">SMTP支持：</th>
+                                                            <th colspan=""><?php $strsmtp= get_cfg_var("SMTP")?'<font color="green">√</font>': '<font color="red">×</font>';?><?=$strsmtp;?></th>
+                                                            <th colspan="">SMTP地址：</th>
+                                                            <th colspan=""><?php $smtpadd= get_cfg_var("SMTP")?get_cfg_var("SMTP"):'<font color="red">×</font>';?><?=$smtpadd;?></th>
+
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            
+                            </div>
+                                    
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>

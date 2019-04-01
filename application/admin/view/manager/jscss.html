@@ -1,0 +1,147 @@
+<script>
+	var job_lock=0;
+	// 添加管理区域
+	function add_area(obj){
+		var type = obj.getAttribute("name");//类型  1省份 2城市 3区域
+
+		var html = '';
+		html = '<div class="job2" id="'+obj.id+'" name="'+type+'">'+obj.innerHTML+'<img src="__ADMIN__/images/close.gif" onclick="remove_area(this)"/></div>';
+		$("div").remove("#"+obj.id);
+		$("#my_area_list").append(html);
+
+		// 省级
+		if(type == 1){
+			var province_ids = $('#province_ids').val();
+			// 判断是否包含了该区域
+			if(province_ids.indexOf(obj.id) >=0 ){
+			// 已包含了该职位		
+			}else{
+				$('#province_ids').val(province_ids+','+obj.id);
+			}
+		// 市级
+		}else if(type==2){
+			var city_ids = $('#city_ids').val();
+			// 判断是否包含了该区域
+			if(city_ids.indexOf(obj.id) >=0 ){
+			// 已包含了该职位		
+			}else{
+				$('#city_ids').val(city_ids+','+obj.id);
+			}
+		// 区级
+		}else if(type==3){
+			var area_ids = $('#area_ids').val();
+			// 判断是否包含了该区域
+			if(area_ids.indexOf(obj.id) >=0 ){
+			// 已包含了该职位		
+			}else{
+				$('#area_ids').val(area_ids+','+obj.id);
+			}
+		}
+	}
+
+	// 删除管理区域
+	function remove_area(obj){
+		var pid = $(obj).parent('div').attr('id');
+		var type = $(obj).parent('div').attr("name");//类型  1省份 2城市 3区域
+		$("div").remove("#"+pid);
+
+		// 省级
+		if(type==1){
+			var province_ids = $('#province_ids').val();
+			province_ids = province_ids.replace(","+pid,"");
+			province_ids = province_ids.replace(pid,"");
+			 $('#province_ids').val(province_ids);
+		// 市级
+		}else if(type==2){
+			var city_ids = $('#city_ids').val();
+			//判断是否包含了该区域
+			city_ids = city_ids.replace(","+pid,"");
+			city_ids = city_ids.replace(pid,"");
+			 $('#city_ids').val(city_ids);
+		// 区级
+		}else if(type==3){
+			var area_ids = $('#area_ids').val();
+			area_ids = area_ids.replace(","+pid,"");
+			area_ids = area_ids.replace(pid,"");
+			$('#area_ids').val(area_ids);
+		}
+	}
+
+	var admin_pro = "";
+	var admin_city = "";
+	var admin_area = "";
+	var all_region_status = 1;
+	
+	// 点击获取省市级
+	function getCity(val){
+		// 省份
+		if(val == 1){
+			$.ajax({
+				type: 'post',
+				data:{'id':0},
+				url: "{:url('common/city')}",
+				success: function(data) {
+					var html2 = '';	
+					var array = eval(data);
+					$.each(array,function(i,item){
+						if(admin_pro.indexOf(","+item.id+",") >=0 || all_region_status==1){
+							$('#province_list').append('<option value="'+item.id+'">'+item.region_name+'</option>');
+							//是否有该区域权限	
+							html2 +='<div class="job2" id="'+item.id+'" name="1" title="点击加入" onclick="add_area(this)">'+item.region_name+'</div>';	
+						}				
+					});
+					$('#area_list').html(html2);
+				}
+			});
+		}else{
+			$.ajax({
+				type: 'post',
+				data:{'id':val},
+				url: "{:url('common/city')}",
+				success: function(data) {
+					$('#region_list').html('<option value="">选择城市</option>');
+					var html2 = '';	
+					var array = eval(data);
+					$.each(array,function(i,item){
+						if(admin_pro.indexOf(","+item.id+",") >=0 || all_region_status==1){
+							$('#region_list').append('<option value="'+item.id+'">'+item.region_name+'</option>');
+							//是否有该区域权限	
+							html2 +='<div class="job2" id="'+item.id+'" name="2" title="点击加入" onclick="add_area(this)">'+item.region_name+'</div>';	
+						}				
+					});
+					$('#area_list').html(html2);
+				}
+			});
+		}
+	}
+	getCity(1);
+
+	// 点击市级，获得区级
+	function getArea(val){
+		$.ajax({
+			type: 'post',
+			data:{'id':val},
+			url: "{:url('common/area')}",
+			success: function(data) {
+				var html2 = '';	
+				var array = eval(data);
+				$.each(array,function(i,item){
+					if(admin_pro.indexOf(","+item.id+",") >=0 || all_region_status==1){
+						//是否有该区域权限	
+						html2 +='<div class="job2" id="'+item.id+'" name="3" title="点击加入" onclick="add_area(this)">'+item.region_name+'</div>';	
+					}				
+				});
+				$('#area_list').html(html2);
+			}
+		});
+	}
+</script>
+
+<style>
+.xdcms_table{ float:left}
+.select_button{ background-color:#00CCCC}
+.job2{height:30px; border:1px #ccc solid;color: #fff; margin:5px; float:left; text-align:center; line-height:20px; background:#00b3a3; position:relative; padding:5px; cursor:pointer}
+.job2 img{ position:absolute; top:-5px; right:-5px; cursor:pointer}
+.check{ float:left;; margin-left:10px}
+.layui-input-block{margin-left:120px}
+</style>

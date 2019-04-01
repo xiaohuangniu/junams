@@ -1,0 +1,77 @@
+
+
+<div id="main" role="main">
+	<div class="tab-content tab-addtabs">
+		<div id="content">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					 <div class="content">
+						<form class="layui-form" >
+							
+							<div class="layui-form-item">
+								<label class="layui-form-label">启用/禁用：</label>
+								<div class="layui-input-block">
+									<input type="checkbox" name="status" id="status" value="1" lay-skin="switch" lay-text="启用|禁用">
+								</div>
+							</div>
+								
+							<div class="layui-form-item">
+								<label class="layui-form-label">关键词：</label>
+								<div class="layui-input-block">
+									<input type="text" id="name" placeholder="匹配关键字" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item layui-form-text" >
+								<label class="layui-form-label">回复内容：</label>
+								<div class="layui-input-block">
+									<textarea name="contenet" style="height:180px" class="layui-textarea" id="content_1"></textarea>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+var index;
+layui.use(['form'], function(){
+	var form = layui.form;
+});
+
+function doSubimt() {
+	var res;
+	var name            = $('#name').val();
+	var status      	= (document.getElementById("status").checked === true) ? $('#status').attr('value') : 0;
+	var content         = $('#content_1').val();
+	var data            = {'name':name, 'status':status, 'content':content};
+
+	if (name == '') {
+		$.thinkmimi({Content : '匹配关键字不能为空！', Type:2, Align:'right', OutTime:2000});return false;
+	}
+	if (content == '') {
+		$.thinkmimi({Content : '回复内容不能为空！', Type:2, Align:'right', OutTime:2000});return false;
+	}
+
+	$.ajax({
+		type: 'post',
+		data: data,
+		async: false,
+		url: "{:url('auto_add')}",
+		success: function(data) {
+			var array = eval('('+data+')');
+			res = array;
+			if (array['code'] == '01') {
+				$.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+				res = false;
+			}
+		}
+	});
+	return res;
+}
+</script>

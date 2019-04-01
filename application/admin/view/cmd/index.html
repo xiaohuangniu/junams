@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>JUNAMS - CMD 命令行工具</title>
+    </head>
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/cmd.css">
+    <script src="__ADMIN__/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="__ADMIN__/js/junphp.js"></script>
+
+    <!--编辑器基础样式-->
+    <link rel="stylesheet" href="__ADMIN__/css/codemirror/lib/codemirror.css">
+    <script src="__ADMIN__/css/codemirror/lib/codemirror.js"></script>
+
+    <!--引入css文件，用以支持主题-->
+    <link rel="stylesheet" href="__ADMIN__/css/codemirror/theme/seti.css">
+
+    <!--支持代码折叠-->
+    <link rel="stylesheet" href="__ADMIN__/css/codemirror/addon/fold/foldgutter.css"/>
+    <script src="__ADMIN__/css/codemirror/addon/fold/foldcode.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/fold/comment-fold.js"></script>
+
+    <!--全屏模式-->
+    <link rel="stylesheet" href="__ADMIN__/css/codemirror/addon/display/fullscreen.css">
+    <script src="__ADMIN__/css/codemirror/addon/display/fullscreen.js"></script>
+
+    <!--括号匹配-->
+    <script src="__ADMIN__/css/codemirror/addon/edit/matchbrackets.js"></script>
+
+    <!--高亮库-->
+    <script src="__ADMIN__/css/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="__ADMIN__/css/codemirror/mode/clike/clike.js"></script>
+
+    <script src="__ADMIN__/css/codemirror/mode/javascript/javascript.js"></script>
+
+    <script src="__ADMIN__/css/codemirror/mode/css/css.js"></script>
+    <script src="__ADMIN__/css/codemirror/mode/php/php.js"></script>
+    <script src="__ADMIN__/css/codemirror/mode/xml/xml.js"></script>
+    <script src="__ADMIN__/css/codemirror/mode/sql/sql.js"></script>
+    <script src="__ADMIN__/css/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <!--自动补全库-->
+    <link rel="stylesheet" href="__ADMIN__/css/codemirror/addon/hint/show-hint.css">
+
+    <script src="__ADMIN__/css/codemirror/addon/hint/show-hint.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/hint/javascript-hint.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/hint/html-hint.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/hint/xml-hint.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/hint/css-hint.js"></script>
+    <script src="__ADMIN__/css/codemirror/addon/hint/sql-hint.js"></script>
+
+    <style>
+    .w150{width: 150px;float: left;}
+    .w550{width: 550px;float: left;}
+    .w750{width: 750px;float: left;}
+    </style>
+<body>
+    <!--打开使用手册-->
+    <div id="cmd_whole">查看命令行大全</div>
+
+    <!--命令行操作界面-->
+    <div class="cmd" contenteditable="true" style="word-wrap:break-word;word-break:break-all;">
+        <div contenteditable="false">欢迎使用JunAms-CMD 命令行工具 (^.^)</div>
+        <div><span class="command-line" contenteditable="false">command line：></span>&nbsp;</div>
+    </div>
+    <!--代码编辑器操作页面-->
+    <div class="code-upd"><textarea id="code"></textarea>
+      <div class="code-bottom">
+        <div class="vif-left"><span id="code-vif"></span></div>
+        <button type="button" class="code-post">保存</button>
+        <button type="button" class="code-out">退出</button>
+      </div>
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript" src="__ADMIN__/js/juncmd.js"></script>
+<script type="text/javascript">
+
+// 查看命令行大全
+$('#cmd_whole').click(function(){
+    var html = $('.cmd').html();
+    var txt = '';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 快捷键：ESC 清空当前界面，如果处于文件编辑器状态下，会退出编辑器</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 快捷键：F1  恢复清屏数据(注意，这个快捷键可能会被浏览器先占用，例如360浏览器)</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 命令行介绍如下：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 本工具是一个可嵌入在后台管理系统中的便捷式开发工具，适用于中小型项目，研发理念为，方便程序员的日常项目维护，正常状态下的程序调试；</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 本工具可用于商业用途，但不可随意更改作者著作权。</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 命令行使用说明：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 初次使用命令行，系统提供了一个初始用户，账号密码：admin admin</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 使用命令行之前，需要先登录工具，进入页面后敲下回车，即可快捷弹出登录指令</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 每个命令行的提交都是使用【回车键】</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 命令行每个参数之间，都是用一个空格进行分割，例如登录指令：admin login 账号 密码</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 命令行的组成方式：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 主类 子类 参数1 参数2 参数N </div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 1、CMD工具账号操作指令：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin login 账号 密码 登录工具</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # exit 退出工具</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin add 用户名 密码 昵称[null] 创建账号</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin pwd 密码 修改当前自己的密码</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin pwd 账号 密码 修改他人密码【admin专用】</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # -------以下为操作账号信息指令------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin -s 查看所有用户列表</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin -s 用户名    查看账号状态</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin -s 用户名 -y 开启账号</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin -s 用户名 -n 关闭账号</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin -s 用户名 -i 查看指定用户详情</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # -------以下为查看账号历史命令记录指令------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin la   读取当前账号下，前10条登录记录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin la 5 同上，只读5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin la -i 读取当前账号下，只显示命令行，前10条登录记录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin la -i 5 同上，只读5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin la admin 读取admin账号下，前10条登录记录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin la admin 5 同上，只读5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin la admin -i 5 同上，只显示命令行，只读前5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # -------以下为查看账号历史登录日志指令------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin lg   读取当前账号下，前10条登录记录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin lg 5 同上，只读5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin lg -i 读取当前账号下，只显示 ip 与 登录时间，前10条登录记录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin lg -i 5 同上，只读5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin lg admin 读取admin账号下，前10条登录记录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin lg admin 5 同上，只读5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # admin lg admin -i 5 同上，只显示 ip 与 登录时间，只读前5条</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 2、PHP环境的相关操作指令：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # php -w 打印服务器基本配置</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # php -c 打印服务器已编译模块</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # php -l 打印PHP系统相关参数</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # php -z 打印PHP相关组件扩展</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # php -m 打印数据库相关扩展与配置参数</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 3、切换命令行所处目录的相关指令：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # cd ./ 回到根地址</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # cd ../ 回到上一层目录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # cd /var/www 或者 ./var/www 从根目录开始出发 </div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # cd ../var/www 从上一层目录出发</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # cd var 从当前目录下，寻找目录进入</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 4、目录打印的相关指令：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # ls 当前目录下文件结构</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # ls -i 当前目录下文件结构，忽略时间</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # ls /var/www 或者 ../var/www 指定目录结构</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # ls /var/www -i 指定目录结构，忽略时间</div>'; 
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 5、目录操作的相关指令：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # mk -a 目录地址 创建该目录，默认0755权限</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # mk -a 目录地址 0777 创建该目录，指定0777权限，（注意：linux下最高只支持0755）</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # mk -d 目录地址 删除该目录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # mk -u test test2 修改目录名称,test修改为test4</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # mk -u test /runtime/test2/ 迁移目录</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # mk -c 目录地址 修改目录权限，默认0755权限</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 6、文件操作的相关指令：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # tk -d 文件地址 删除该文件</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # tk -d 文件地址 -i 如果删除文件后目录为空，则把目录也删除</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # tk -u test.txt test2.txt 修改文件名称,test修改为test4</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # tk -u test.txt /runtime/test2.txt 迁移文件</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # tk -u test.txt /runtime/test2.txt -c 复制文件</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # tk -c 文件地址 修改文件权限，默认0755权限</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ 7、文件编辑的相关指令：</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+ # vim 文件地址</div>';
+    txt += '<div contenteditable="false"><span class="command-cmd">CMD：></span>&nbsp;+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>';
+    txt += '<div><span class="command-line" contenteditable="false">command line：></span>&nbsp;';
+    $('.cmd').html(html+txt);
+    // 设置光标到末尾
+    var html = $('.cmd').html();
+    $('.cmd').html('');
+    $('.cmd').focus();
+    Focus(html);
+    $('.cmd').append('</div>');
+});
+
+// 监听回车事件
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        var html = '<span class="command-line" contenteditable="false">command line：&gt;</span>&nbsp;';
+        var txt  = $('.cmd div:last').html().replace(html,'');
+
+        // 发现火狐浏览器的bug，先暂停火狐浏览器的使用
+        if (navigator.userAgent.indexOf("Firefox") > 0) {
+            var html = $('.cmd').html();
+            $('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;已发现火狐浏览器BUG，暂不支持火狐浏览器使用！</div>');
+            // 设置光标到末尾
+            var html = $('.cmd').html();
+            $('.cmd').html('');
+            $('.cmd').focus(); 
+            Focus(html);
+            $('.cmd').append('</div>');
+            return false;
+        }
+
+        var html = $('.cmd').html();
+        $('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;系统请求中，请耐心等候...</div>');
+        
+        $.ajax( {    
+            url:'{:url("index")}', // 路径相对于当前目录，而不是项目根目录
+            data:{    
+                'cmd':txt    
+            },    
+            type:'post',    
+            cache:false,      
+            success:function(data) {
+                // alert(data);
+                var obj  = eval('('+data+')');  
+                // 抛出异常
+                if(!obj.code){
+                    $.thinkmimi({Content : data, Type:2, Align:'centent', OutTime:2000});return false;
+                }
+                // 未登录
+                if (obj.code == 01) {
+                    var html = $('.cmd').html();
+                    $('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;'+obj.msg+'</div>');
+                    var html = $('.cmd').html();
+                    $('.cmd').html(html+'<div><span class="command-line" contenteditable="false">command line：></span>&nbsp;admin login&nbsp;');
+                // 异常操作
+                } else if(obj.code == 02){
+                    code_out();
+                    var html = $('.cmd').html();
+                    $('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;'+obj.msg+'</div>');
+                    var html = $('.cmd').html();
+                    $('.cmd').html(html+'<div><span class="command-line" contenteditable="false">command line：></span>&nbsp;');
+                // 打开文件编辑
+                }else if(obj.code == 03){
+                    $('#code').val(obj.data['content']);
+                    $(".code-upd").attr('data-url', obj.data['url']);  
+                    $(".code-upd").fadeIn(1000);  
+                    cmd_code(obj.msg);
+                    var html = $('.cmd').html();
+                    $('.cmd').html(html+'<div><span class="command-line" contenteditable="false">command line：></span>&nbsp;');
+                // 多列表遍历
+                }else{
+                    if($.isArray(obj.data)){
+                        for(var i=0;i < obj.data.length;i++){
+                            var html = $('.cmd').html();
+                            $('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;'+obj.data[i]+'</div>');
+                        }
+                    }else{
+                        var html = $('.cmd').html();
+						if(obj.code == 04){
+							$('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;已成功进入目录：'+obj.data+'</div>');
+						}else if(obj.code == 05){
+							$('#code').val(obj.data);
+							$(".code-upd").fadeIn(1000);  
+							cmd_code(obj.msg);
+                        }else if(obj.code == 06){
+                            $('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;当前存在目录：'+obj.data+'</div>');
+                        }else{
+							$('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;'+obj.data+'</div>');
+						}
+                    }
+                
+                    $('.cmd').focus(); 
+                    var html = $('.cmd').html();
+                    if(obj.code == '01'){
+                        $('.cmd').html(html+'<div><span class="command-line" contenteditable="false">command line：></span>&nbsp;'+txt);
+                    }else{
+                        $('.cmd').html(html+'<div><span class="command-line" contenteditable="false">command line：></span>&nbsp;');
+                    }
+                }
+
+                // 设置光标到末尾
+                var html = $('.cmd').html();
+                $('.cmd').html('');
+                $('.cmd').focus(); 
+                Focus(html);
+                $('.cmd').append('</div>');
+
+                $('.cmd').scrollTop( $('.cmd')[0].scrollHeight );
+            }, error : function(){
+                $.thinkmimi({Content : "路径异常！", Type:2, Align:'centent', OutTime:2000}); 
+            }    
+        }); 
+
+        return false;
+    } 
+}); 
+
+// 打开文件编辑器
+function cmd_code(model){
+    if(model == 'php') {
+        model = 'application/x-httpd-php';
+    }else if(model == 'xml') {
+        model = 'text/xml';
+    }else if(model == 'js') {
+        model = 'text/javascript';
+    }else if(model == 'css') {
+        model = 'text/css';
+    }else if(model == 'sql') {
+        model = 'text/x-sql';
+    }else{
+        model = 'text/html';
+    }
+    
+    $('.code-upd').show();
+    var type   = {
+        // 高亮显示-关联着自动补齐
+        /**
+         * application/x-httpd-php
+         * text/css
+         * text/javascript
+         * text/html
+         * text/x-sql
+        */
+        mode:'application/x-httpd-php',
+
+        //显示行号
+        lineNumbers:true,
+
+        //设置主题
+        theme:"seti",
+
+        //代码折叠
+        lineWrapping:true,
+        foldGutter: true,
+        gutters:["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+
+        //全屏模式
+        fullScreen:true,
+
+        //括号匹配
+        matchBrackets:true,
+        completeSingle: false,
+        selectionPointer: true,
+        // 按下ctrl键唤起智能提示
+        extraKeys:{
+            "Ctrl": "autocomplete",
+        }
+    };
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), type);
+    
+    // 满足自动触发自动联想功能 
+    document.onkeydown=function(e){
+        e=window.event||e;
+        switch(e.keyCode){
+            case 8:  break;//删除键
+            case 13: break;//回车键
+            case 27: 
+            case 96: break;//清屏键
+            case 37: break;//左键
+            case 38: break;//向上键
+            case 39: break;//右键
+            case 40: break;//向下键
+            default:
+                if($('.code-upd').css('display') == 'block'){
+                    editor.showHint();
+                }
+            break;
+        }
+    }
+
+    // 提交文件保存更新
+    $(".code-post").on('click', function(){
+        $.ajax( {    
+            url:'{:url("index")}', // 路径相对于当前目录，而不是项目根目录
+            data:{    
+                'url':$(".code-upd").attr('data-url'),
+                'type':'file_upd',
+                'content':editor.getValue()
+            },    
+            type:'post',    
+            cache:false,      
+            success:function(data) {
+                var obj  = eval('('+data+')');  
+                // 抛出异常
+                if(!obj.code){alert(data);}
+
+                if(obj.code == '00' || obj.code == '01'){
+                    prompt({'Id':'code-vif','Content':obj.msg});
+                }else if(obj.code == '01'){
+                    code_out();
+                    var html = $('.cmd').html();
+                    $('.cmd').html(html+'<div contenteditable="false"><span class="command-echo">command Eco：></span>&nbsp;'+obj.msg+'</div>');
+                    var html = $('.cmd').html();
+                    $('.cmd').html(html+'<div><span class="command-line" contenteditable="false">command line：></span>&nbsp;admin login&nbsp;');
+                    // 设置光标到末尾
+                    var html = $('.cmd').html();
+                    $('.cmd').html('');
+                    $('.cmd').focus(); 
+                    Focus(html);
+                    $('.cmd').append('</div>');
+                    $('.cmd').scrollTop( $('.cmd')[0].scrollHeight );
+                }
+            }, error : function(){
+                $.thinkmimi({Content : "路径异常！", Type:2, Align:'centent', OutTime:2000});
+            }    
+        }); 
+    });
+}
+</script>

@@ -1,0 +1,370 @@
+<style>
+.wrapper::-webkit-scrollbar,html::-webkit-scrollbar,body::-webkit-scrollbar{width: 0px;}
+</style>
+
+<body class="sidebar-mini skin-green">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!--Logo-->
+    <a href="{:url('index/index')}" class="logo">
+      <span class="logo-mini"><b>Jun</b></span>
+      <span class="logo-lg"><b>Jun</b>AMS</span>
+    </a>
+    <!--TOP导航-->
+    <nav class="navbar navbar-static-top">
+      <!--切换导航按钮-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">切换导航</span>
+      </a>
+      <div id="nav" class="pull-left">
+        <!--如果不想在顶部显示角标,则给ul加上disable-top-badge类即可-->
+        <ul class="nav nav-tabs nav-addtabs disable-top-badge" role="tablist">
+            <!--更多标签-->
+            <li class="dropdown pull-right tabdrop" style="display:none">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
+                    <i class="glyphicon glyphicon-align-justify"></i><b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    
+                </ul>
+            </li>
+            <!--打开标签-->
+            <li class="active"><a data-url="{:url('index/main')}"><i class="fa fa-dashboard"></i><span>首页</span><span class="pull-right-container"><small class="label pull-right bg-blue">hot</small></span></a><i class="close-tab fa fa-remove"></i></li>
+        </ul>
+    </div>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+            <!--返回到首页-->
+            <li>
+                <a href="" target="_blank"><i class="fa fa-home" style="font-size:14px;"></i></a>
+            </li>
+
+            <!-- 消息通知 -->
+            <!--彩蛋
+            <li class="dropdown notifications-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-bell-o"></i>
+                    <span class="label label-warning">10</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="header">你有10个通知</li>
+                    <li>
+                    <ul class="menu">
+                        <li>
+                        <a href="#">
+                            <i class="fa fa-users text-aqua"></i>样式1
+                        </a>
+                        </li>
+                        <li>
+                        <a href="#">
+                            <i class="fa fa-warning text-yellow"></i>样式2
+                        </a>
+                        </li>
+                        <li>
+                        <a href="#">
+                            <i class="fa fa-users text-red"></i>样式3
+                        </a>
+                        </li>
+                        <li>
+                        <a href="#">
+                            <i class="fa fa-shopping-cart text-green"></i>样式4
+                        </a>
+                        </li>
+                        <li>
+                        <a href="#">
+                            <i class="fa fa-user text-red"></i>样式5
+                        </a>
+                        </li>
+                    </ul>
+                    </li>
+                    <li class="footer"><a href="#">查看所有通知</a></li>
+                </ul>
+            </li>
+            -->
+            
+            <!--打开内置的命令行工具-->
+            {if condition="$adminController->vif('cmd','index')"}
+            <li>
+                <a href="javascript:cmd();" data-toggle="checkupdate" title="打开CMD工具"><i class="fa fa-fire-extinguisher" style="font-size:14px;"></i></a>
+            </li>
+            {/if}
+            <!--检测版本更新-->
+            <li>
+                <a href="javascript:edition();" data-toggle="checkupdate" title="检测更新">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </li>
+            <!--检测BOM头-->
+            {if condition="$adminController->vif('index','bomhead')"}
+            <li>
+                <a href="javascript:bomhead();" data-toggle="checkupdate" title="检测BOM头">
+                    <i class="fa fa-bomb"></i>
+                </a>
+            </li>
+            {/if}
+            <!--清除缓存-->
+            {if condition="$adminController->vif('index','runtime_del')"}
+            <li>
+                <a href="javascript:runtime();" data-toggle="wipecache" title="清空缓存">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </li>
+            {/if}
+            <!--切换语言包-->
+            <!--彩蛋
+            <li class="hidden-xs">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-language"></i></a>
+                <ul class="dropdown-menu">
+                    <li class="active">
+                        <a href="?ref=addtabs&amp;lang=zh-cn">简体中文</a>
+                    </li>
+                    <li class="">
+                        <a href="?ref=addtabs&amp;lang=en">English</a>
+                    </li>
+                </ul>
+            </li>
+            -->
+            <!--打开全屏-->
+            <li class="hidden-xs">
+                <a href="javascript:Fkey();" data-toggle="fullscreen"><i class="fa fa-arrows-alt"></i></a>
+            </li>
+            <!--账号信息-->
+            <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="__ADMIN__/dist/img/user2-160x160.jpg" class="user-image" alt="Admin">
+                    <span class="hidden-xs">{$admin_data.m_nice}</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        <img src="__ADMIN__/dist/img/user2-160x160.jpg" class="img-circle" alt="">
+
+                        <p>
+                            {if condition="$admin_data.m_type == 1"}超级管理员{else /}普通管理员{/if} - {$admin_data.m_nice}<small>额度：0</small>
+                        </p>
+                    </li>
+                    <!-- Menu Body -->
+                    <li class="user-body">
+                        <div class="row">
+                            <div class="col-xs-4 text-center">
+                                <a href="https://xiuxian.junphp.com" target="_blank">神牛教</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="https://blog.junphp.com" target="_blank">交流社区</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="https://xiuxian.junphp.com" target="_blank">官方文档</a>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="javascript:profile('{:url('manager/profile')}');" class="btn btn-primary addtabsit"><i class="fa fa-user"></i> 个人配置</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="{:url('login/out')}" class="btn btn-danger"><i class="fa fa-sign-out"></i> 注销</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <!--前端在状态栏控制-->
+            <li>
+                <a href="javascript:;" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="__ADMIN__/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+        </div>
+        <div class="pull-left info">
+          <p>{if condition="$admin_data.m_type == 1"}超级管理员{else /}普通管理员{/if} - {$admin_data.m_nice}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+        </div>
+      </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="搜索菜单">
+          <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+          </span>
+        </div>
+      </form>
+
+      {include file="common/menu" /}
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="ifram-box">
+  	<iframe class="content-wrapper" src="{:url('index/main')}" width="100%" height="841px" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling-x="no" scrolling-y="auto" allowtransparency="yes"></iframe>
+  </div> 
+  {include file="common/footer" /}
+  {include file="common/tab" /}
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper  toast-top-center -->
+
+<script>
+
+// 打开cmd命令
+function cmd() {
+    layui.use(['layer'], function(){ 
+        var form = layer = layui.layer;
+        var width = document.body.clientWidth+'px'; 
+        var height = document.body.clientHeight+'px';
+
+
+        layer.open({
+            type: 2,
+            title: 'JunAms-CMD',
+            shadeClose: true,
+            shade: false,
+            maxmin: true,
+            area: [width, height],
+            content: '{:url("cmd/index")}',
+        });
+    });
+}
+
+// 清除缓存
+function runtime(){
+    $.thinkmimi({Content : '缓存清除成功', Type:1, Align:'right', OutTime:2000});
+    $.ajax({
+        type: 'post',
+        data:{},
+        url: "{:url('index/runtime_del')}",
+        success: function(data) {}
+    });
+}
+// 更新版本
+function edition() {
+    $.thinkmimi({Content : '版本检测中...', Type:1, Align:'right', OutTime:2000});
+    $.ajax({
+        type: 'post',
+        data:{},
+        url: "{:url('common/edition')}",
+        success: function(data) {
+            var array = eval('('+data+')');
+            if (array['code'] == '01') {
+                $.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+            } else {
+                $.thinkmimi({Content : array['msg'], Type:1, Align:'right', OutTime:2000});
+            }
+        }
+    });
+}
+// 修改个人配置
+function profile(href) {
+    layui.use(['form', 'layer'], function(){ 
+        var form = layui.form, layer = layui.layer;
+        layer.open({
+            type: 2,
+            title: '修改个人配置',
+            shadeClose: true,
+            shade: false,
+            maxmin: true,
+            area: ['400px', '400px'],
+            btn: ['确认', '取消'],
+            content: href,
+            yes: function(index, layero) {
+                var _this = layero.find('iframe')[0];
+                var bool  = _this.contentWindow.doSubimt();
+                if (bool !== false) {
+                    $.thinkmimi({Content : bool['msg'],Type : 1,Align:'right',OutTime:2000,});
+                    menu_run();
+                    layer.closeAll();
+                    window.setTimeout(function(){
+                        window.location.href="{:url('login/out')}";
+                    }, 700);
+                }
+            },
+        });
+    });
+}
+
+// 检测bom头
+function bomhead() {
+    $.thinkmimi({Content : 'BOM头检测中...', Type:1, Align:'right', OutTime:2000});
+    $.ajax({
+        type: 'post',
+        data:{'type':1},
+        url: "{:url('index/bomhead')}",
+        success: function(data) {
+            var array = eval('('+data+')');
+            if (array['code'] == '01') {
+                $.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+            } else {
+                $.thinkmimi({Content : array['msg'], Type:1, Align:'right', OutTime:2000});
+                if (array['data'] != '') {
+                    layui.use(['layer'], function(){ 
+                        var form = layer = layui.layer;
+                        layer.open({
+                            type: 1,
+                            title: '存在BOM头',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true,
+                            area: ['50%'],
+                            btn: ['确认清除', '取消'],
+                            content: array['data'],
+                            yes: function(index, layero) {
+                                if (confirm('你要清除BOM头吗')) {
+                                    $.thinkmimi({Content : 'BOM头清除中...', Type:1, Align:'right', OutTime:2000});
+                                    $.thinkmimi({Content : '注意：如果您是Linux环境下，请手动对存在BOM头的文件设置打开、修改权限，否则程序可能会执行不成功！', Type:2, Align:'right', OutTime:5000});
+                                    $.ajax({
+                                        type: 'post',
+                                        data:{'type':2},
+                                        url: "{:url('index/bomhead')}",
+                                        success: function(data) {
+                                            var array = eval('('+data+')');
+                                            if (array['code'] == '01') {
+                                                $.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+                                            } else {
+                                                $.thinkmimi({Content : array['msg'], Type:1, Align:'right', OutTime:2000});
+                                                layer.closeAll();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    });
+                }
+            }
+        }
+    });
+}
+{if condition="$adminController->vif('index','warning_flow') && DS == '/'"}
+// 定时检测流量情况
+setInterval(function(){
+    $.ajax({
+        type: 'post',
+        data:{},
+        url: "{:url('index/warning_flow')}",
+        success: function(data) {
+            if (data)  {
+                var array = eval('('+data+')');
+                if (array['code'] == '01') {
+                    $.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+                }
+            }
+        }
+    });
+}, 1500);
+{/if}
+</script>

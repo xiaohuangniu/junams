@@ -1,0 +1,199 @@
+<style>
+body{background: #fff;padding: 20px}
+.job{height:30px; border:1px #ccc solid;color: #fff; margin:5px; float:left; text-align:center; line-height:20px; background:#009688; position:relative; padding:5px; cursor:pointer}
+td,th{font-size:13px}
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {border: 1px solid #e8e8e8;text-align: left;}
+</style>
+        
+
+<div class="org-view-wrapper card table-tray">
+    
+    <div class="org-right-col tray-cell j_user">
+        <div class="user-sort-view j-user-list">
+            <div class="users-list-pinyin"></div>
+            <div class="user-sortbar table-tray"><div class="tray-cell" style="width: 300px"></div></div>
+            <div id="user-container" class="users-container">
+                <div class="bs-example">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr><th colspan="7" style="text-align: center">操作记录 - 详情信息</th></tr>    
+                            <tr>
+                                <th>标题</th>
+                                <th>
+                                    {$info.lt_name}							
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>执行状态</th>
+                                <th>
+                                    {switch $info.mal_status}
+                                        {case 1} <font style="color: #009688">成功</font> {/case}
+                                        {case 2} <font style="color: #01AAED">失败</font> {/case}
+                                        {case 3} <font style="color: #FF5722">异常</font> {/case}
+                                    {/switch}							
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>操作详情</th>
+                                <th>
+                                    {$info.mal_des}						
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th>执行地址</th>
+                                <th>
+                                    {$info.mal_url}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th width="150">执行IP</th>
+                                <td>
+                                    {$info.mal_ip}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th width="150">IP所属地区</th>
+                                <td>
+                                    {$region}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th width="150">带宽类型</th>
+                                <td>
+                                    {$isp}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>执行时间</th>
+                                <td>
+                                    {$info.mal_time|date="Y-m-d H:i:s",###}
+                                </td>
+                            </tr>
+
+                            <tr><th colspan="7" style="text-align: center">管理员的 - 详情信息</th></tr>
+
+                            <tr>
+                                <th>真实姓名</th>
+                                <th>
+                                    {$info.m_nice}								
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>手机号</th>
+                                <th>
+                                    {$info.m_phone}								
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>状态</th>
+                                <th>
+                                    {switch $info.m_status}
+                                        {case 1} <font style="color: #009688">启用</font> {/case}
+                                        {case 2} <font style="color: red">禁用</font> {/case}
+                                    {/switch}							
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>在职</th>
+                                <th>
+                                    {switch $info.m_existence}
+                                        {case 1} <font style="color: #009688">在职</font> {/case}
+                                        {case 2} <font style="color: red">离职</font> {/case}
+                                    {/switch}							
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>管理员类型</th>
+                                <th>
+                                    {switch $info.m_type}
+                                        {case 1} <font style="color: #009688">超级管理员</font> {/case}
+                                        {case 2} <font style="color: red">普通管理员</font> {/case}
+                                    {/switch}							
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>用户名</th>
+                                <th>
+                                    {$info.m_user}						
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th width="150">所属部门</th>
+                                <td>
+                                    {$info.s_name|default='无'}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="150">所属岗位</th>
+                                <td>
+                                    {$info.j_name|default='无'}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="150">授权角色</th>
+                                <td>
+                                    {$info.role_name}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>创建时间</th>
+                                <td>
+                                    {$info.m_time|date="Y-m-d H:i:s",###}
+                                </td>
+                            </tr>
+                            
+                            <tr><th colspan="7" style="text-align: center">管理员拥有的 - 地区权限详情</th></tr>
+                            
+                            <tr>
+                                <th>全国权限</th>
+                                <td>
+                                    {eq name="$info.m_nationwide" value="1"}
+                                        <font style="color: #01AAED">是</font>
+                                    {else/}
+                                        <font style="color: red">否</font>
+                                    {/eq}
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th width="150">省权限</th>
+                                <td>
+                                    {volist name="province_ids" id="v"}
+                                        <div class="job">{$v.r_name}</div>
+                                    {/volist}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="150">市权限</th>
+                                <td>
+                                    {volist name="city_ids" id="v"}
+                                        <div class="job">{$v.r_name}</div>
+                                    {/volist}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="150">区权限</th>
+                                <td>
+                                    {volist name="area_ids" id="v"}
+                                        <div class="job">{$v.r_name}</div>
+                                    {/volist}
+                                </td>
+                            </tr>
+                            
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+
