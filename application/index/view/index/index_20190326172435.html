@@ -1,0 +1,156 @@
+{include file="index/header" /}
+
+
+<div class="benner">
+    <div class="banner_wrap">
+        <div class="left"> <</div>
+        <div class="right">></div>
+        <ul>
+            {ams:list table='demo_benner' field='title,img,href' where='status=1' limit='5' order='sort DESC' id='vo'}
+                <li {if condition="$key==0"}class="on" style="display: block;"{/if}><a href="{$vo.href}"><img src="{$vo.img}" height="350px" /></a></li>
+            {/ams:list}
+        </ul>
+        <div class="banner_select">
+            <ul>
+                {ams:list table='demo_benner' field='title' where='status=1' limit='5' order='sort DESC' id='vo'}
+                    <li><a>{$vo.title}</a></li>
+                {/ams:list}
+            </ul>
+            <div class="J_trigger_line"></div>
+        </div>
+    </div>
+</div>
+
+<div class="main">
+    <div class="main-body">
+        <!--列表-->
+        <div class="main-left">
+            <div class="slideTxtBox">
+                <div class="hd"> 
+                    <ul>
+                        {ams:list table='item_content' field='ic_title' where="ic_id='5c9991de4c180' || ic_id='5c9992b5333fe'" id='vo'}
+                            <li>{$vo.ic_title}</li>
+                        {/ams:list}
+                    </ul>
+                
+                </div>
+                
+                <div class="bd">
+                    {ams:list table='item_content' field='ic_id' where="ic_id='5c9991de4c180' || ic_id='5c9992b5333fe'" id='vo'}
+                    <ul>
+                        {php}$title = $vo['ic_id'];{/php}
+                        {ams:list table='demo_news' field='id,title,time,des,thumbnail,tags,author,columnpid' where="columnpid='$title'" limit='5' id='v'}
+                        <li>
+                            <div class="ams-shadow-content">
+                                <a class="article-item-pic" href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">
+                                    <img class="scaleBig" src="{$v.thumbnail}" alt="">
+                                </a>
+                                <div class="article-item-info clearfloat">
+                                    <p class="feed-title-wrapper ellipsis-2">
+                                        <a class="article-item-title weight-bold" href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">{$v.title}</a>
+                                    </p>
+                                    <a class="article-item-description ellipsis-2" href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">{$v.des}</a>
+                                    <div class="ams-flow-bar">
+                                        <span class="ams-flow-bar-motif">相关标签：
+                                            <a href="">未来地产</a>|
+                                        </span>
+                                        <a class="ams-flow-bar-author" href="">{$v.author}</a>
+                                        <span class="ams-flow-bar-time" style="float:right">{$v.time}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {/ams:list}
+                    </ul>
+                    {/ams:list}
+                </div>
+                
+            </div>
+        </div>
+
+        <!--右侧-->
+        <div class="right_box">
+            <div class="right_class">
+                <div class="right_title">24小时快讯</div>
+                
+                {ams:list table='demo_news' field='id,title,time,columnpid' where="date(time) = curdate()" limit='7' order='time DESC' id='v'}
+                <div class="right_new">
+                    <div class="right_dz"><img src="__HOME__/index/images/right.png"></div>
+                    <div class="right_centent">
+                        <div><a href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">{$v.title}</a></div>
+                        <div class="right_time">{$v.time}</div>
+                    </div>
+                </div>
+                {/ams:list}
+            </div>
+            <div class="tw_load2">
+                <div class="load_box2"><a href="">浏览更多</a></div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{include file="index/footer" /}
+
+<script type="text/javascript">
+    $(".slideTxtBox").slide();
+    $(document).ready(function() {
+        var aa = 0;
+        var size = $(".banner_select>ul li").size(); //5
+        var img_size = $(".banner_wrap>ul li").size(); //5
+        for(var i = 0; i <= size - 1; i++) {
+            $(".banner_select>ul li")[i].id = i;
+            $(".banner_wrap>ul li")[i].id = i;
+        }
+
+        $(".banner_select>ul li").hover(function() {
+            aa = this.id
+            $(".J_trigger_line").css({
+                "left": (this.id * 195)
+            })
+            $(".banner_wrap>ul li").eq(this.id).addClass("on").siblings(this).removeClass("on");;
+            $(".banner_wrap>ul li").eq(this.id).fadeIn(500).siblings(this).fadeOut(500);
+        });
+
+        function move() {
+            $(".J_trigger_line").css({
+                "left": (aa * 195)
+            })
+            $(".banner_wrap>ul li").eq(aa).addClass("on").siblings(aa).removeClass("on");
+            $(".banner_wrap>ul li").eq(aa).fadeIn(500).siblings(aa).fadeOut(500);
+        }
+
+        var t = setInterval(lunbo, 2000);
+
+        function lunbo() {
+            if(aa == img_size) {
+                aa = 0;
+            }
+            move();
+            aa++
+        }
+        $(".banner_wrap").hover(function() {
+            clearInterval(t);
+        }, function() {
+            t = setInterval(lunbo, 2000);
+        });
+        $(".left").click(function() {
+            if(aa <= 1) {
+                aa = 6;
+            }
+            aa -= 2;
+            move();
+            aa++;
+        })
+        $(".right").click(function() {
+            if(aa == 5) {
+                aa = 0;
+            }
+            aa++;
+            aa--;
+            move();
+            aa++;
+        })
+    })
+</script>

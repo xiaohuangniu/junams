@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JunAMS - CMS</title>
+    <meta name="keywords" content="JunAMS - CMS" />
+    <meta name="description" content="JunAMS - CMS" />
+
+    <link href="__HOME__/index/css/main.css" rel="stylesheet"/>
+    
+    <script src="__HOME__/index/js/jquery.min.js"></script>
+    <script src="__HOME__/index/js/jquery.SuperSlide.2.1.1.js"></script>
+    <style type="text/css">
+
+
+
+		</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="head">
+        <span class="logo"><a href="/" title="JunAMS">JunAMS</a></span>
+
+        <div class="menu">
+            <ul>
+                {ams:list table='item_column' field='ic_title,ic_high,ic_href' where="i_id='5c8f383470c45'" id='vo'}
+                    <li><a {if condition="$vo['ic_high'] == 1"}class="choose"{/if} href="{$vo.ic_href}">{$vo.ic_title}</a></li>
+                {/ams:list}
+            </ul>
+        </div>
+    </div>
+</div>

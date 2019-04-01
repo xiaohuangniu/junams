@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <title>JUNCMS</title>
+        <link rel="shortcut icon" href="__ADMIN__/images/favicon.ico" />
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="stylesheet"  href="__ADMIN__/css/backend.css">
+        <link href="__ADMIN__/css/main.login.css" rel="stylesheet" /> 
+                
+        <script src="__ADMIN__/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="__ADMIN__/js/junphp.js"></script>
+        
+        <body>
+
+        
+
+        <div id="app">
+            <div class="_9uuXX">
+                <div class="_1al5I">
+                <a href="" class="_4IJDi"><i class="anticon anticon-left-circle" style="margin-right: 10px;">
+                <svg viewbox="64 64 896 896" class="" data-icon="left-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                    <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm104 316.9c0 10.2-4.9 19.9-13.2 25.9L457.4 512l145.4 105.2c8.3 6 13.2 15.6 13.2 25.9V690c0 6.5-7.4 10.3-12.7 6.5l-246-178a7.95 7.95 0 0 1 0-12.9l246-178a8 8 0 0 1 12.7 6.5v46.8z"></path>
+                </svg></i>返回主页</a>
+                <div class="_2Mt7F">
+                <a href="" class="sJ7yC" style="font-size: 50px;">JunAMS</a>
+                <h2>账号登录</h2>
+                <form class="ant-form ant-form-horizontal">
+                <div class="ant-row ant-form-item">
+                    <div class="ant-form-item-control-wrapper">
+                    <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"><span class="ant-input-affix-wrapper"><span class="ant-input-prefix"><i class="anticon anticon-mobile" style="color: rgba(0, 0, 0, 0.25);">
+                        <svg viewbox="64 64 896 896" class="" data-icon="mobile" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                        <path d="M744 62H280c-35.3 0-64 28.7-64 64v768c0 35.3 28.7 64 64 64h464c35.3 0 64-28.7 64-64V126c0-35.3-28.7-64-64-64zm-8 824H288V134h448v752zM472 784a40 40 0 1 0 80 0 40 40 0 1 0-80 0z"></path>
+                        </svg></i></span><input placeholder="请输入账号" id="user" maxlength="11" type="text" class="ant-input" value="" /></span></span>
+                    </div>
+                    </div>
+                </div>
+                <div class="ant-row ant-form-item">
+                    <div class="ant-form-item-control-wrapper">
+                    <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"><span class="ant-input-affix-wrapper"><span class="ant-input-prefix"><i class="anticon anticon-lock" style="color: rgba(0, 0, 0, 0.25);">
+                        <svg viewbox="64 64 896 896" class="" data-icon="lock" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                        <path d="M832 464h-68V240c0-70.7-57.3-128-128-128H388c-70.7 0-128 57.3-128 128v224h-68c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V496c0-17.7-14.3-32-32-32zM332 240c0-30.9 25.1-56 56-56h248c30.9 0 56 25.1 56 56v224H332V240zm460 600H232V536h560v304zM484 701v53c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-53a48.01 48.01 0 1 0-56 0z"></path>
+                        </svg></i></span><input type="password" id="pwd" placeholder="请输入密码" maxlength="32" class="ant-input" value="" /></span></span>
+                    </div>
+                    </div>
+                </div>
+                <div class="ant-row ant-form-item ant-vif" style="position: relative; {if condition="$num < 2"}display: none{/if}">
+                    <div class="ant-form-item-control-wrapper">
+                    <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"><span class="ant-input-affix-wrapper"><span class="ant-input-prefix"><i class="anticon anticon-lock" style="color: rgba(0, 0, 0, 0.25);">
+                        <svg viewbox="64 64 896 896" class="" data-icon="lock" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                        <path d="M832 464h-68V240c0-70.7-57.3-128-128-128H388c-70.7 0-128 57.3-128 128v224h-68c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V496c0-17.7-14.3-32-32-32zM332 240c0-30.9 25.1-56 56-56h248c30.9 0 56 25.1 56 56v224H332V240zm460 600H232V536h560v304zM484 701v53c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-53a48.01 48.01 0 1 0-56 0z"></path>
+                        </svg></i></span><input type="text" id="vif" placeholder="请输入验证码" maxlength="32" class="ant-input" value="" /></span></span>
+                        <img src="{:captcha_src()}" width="130" onClick="this.src='{:captcha_src()}?id='+Math.random()" style="position: absolute;right: 1px;top: 5px;height: 29px;">
+                    </div>
+                    </div>
+                </div>
+                <div class="_201kd">
+                    <label class="ant-checkbox-wrapper"><span class="ant-checkbox"><input type="checkbox" class="ant-checkbox-input" value="" checked /><span class="ant-checkbox-inner"></span></span><span> 7天内自动登录</span></label>
+                    <a class="_3_Lbg" href="">忘记密码？</a>
+                </div>
+                <div class="ant-row ant-form-item _1lgvo">
+                    <div class="ant-form-item-control-wrapper">
+                    <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"><button type="button" class="ant-btn _2jejW ant-btn-primary"><span>登 录</span></button></span>
+                    </div>
+                    </div>
+                </div>
+                </form>
+                <hr />
+                <div class="text-center">
+                <a>2018 - 2019 © blog.junphp.com</a>
+                </div>
+                </div>
+                </div>
+            </div>
+            </div> 
+
+    </body>
+</html>
+<script>
+$('._3_Lbg').click(function(){
+    $.thinkmimi({Content : '管理员中心暂未开放密码找回功能！',Type: 2,Align: 'right',OutTime: 2000,});
+    return false;
+})
+function login() {
+    var user = $('#user').val();
+    var pwd  = $('#pwd').val();
+    var vif  = $('#vif').val();
+    var sa   = $("input[type='checkbox']").is(':checked');
+    var status = 0;
+    if (sa) {
+        var status = 1;
+    }
+
+    var data = {'user':user,'pwd':pwd,'status':status,'vif':vif};
+    if (user == '') {
+        $.thinkmimi({Content : '请输入用户名！',Type: 2,Align: 'right',OutTime: 2000,});return false;
+    }
+    if (pwd == '') {
+        $.thinkmimi({Content : '请输入密码！',Type: 2,Align: 'right',OutTime: 2000,});return false;
+    }
+    
+    $.thinkmimi({Content : '系统处理中...',Type: 1,Align: 'right',OutTime: 2000,});
+
+    $.ajax({
+        type: 'post',
+        data:data,
+        url: "{:url('login/index')}",
+        success: function(data) {
+          var array = eval('(' + data+ ')');
+          if (array['code'] == '01') {
+            $.thinkmimi({Content : array['msg'],Type: 2,Align: 'right',OutTime: 2000,});
+            if (array['data'] >= 2) {
+                $('.ant-vif').show();
+            }
+          } else {
+            $.thinkmimi({Content : array['msg'],Type: 1,Align: 'right',OutTime: 2000,});
+            setTimeout(function(){window.location.href = "{:url('index/index')}";},1500); 
+          }
+      }
+    });
+}
+$(".ant-btn-primary").on('click', function(){
+    login();
+});
+$("#app").keydown(function() {
+    if (event.keyCode == "13") {
+        $('.ant-btn-primary').click();
+    }
+});
+</script>

@@ -1,0 +1,111 @@
+<div id="main" role="main">
+		<div class="tab-content tab-addtabs">
+			<div id="content">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						 <div class="content">
+							<form class="layui-form" >
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											栏目名称
+										</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" id="title" value="{$info.ic_title}">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											模型表名
+										</label>
+										<div class="layui-input-block">
+											<select class="layui-input" id="pid">
+												<option value="0">默认顶级栏目</option>
+												{foreach name="list" item="v"}
+													<option value="{$v.ic_id}" {eq name="info['ic_pid']" value="$v['ic_id']"}selected{/eq}>{$v.ic_title}</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											链接地址
+										</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" id="href" value="{$info.ic_href}">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											Icon图标
+										</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" id="icon" value="{$info.ic_icon}">
+										</div>
+									</div>
+
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											默认高亮
+										</label>
+										<div class="layui-input-block">
+											<input type="checkbox" name="high" lay-skin="switch" {eq name="info['ic_high']" value="1"}checked{/eq} >
+										</div>
+									</div>
+									
+									<div class="layui-form-item" style="height:100px">
+										<label class="layui-form-label">
+											
+										</label>
+									</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+												
+<script>
+{if condition="!$item"}
+$.thinkmimi({Content : '请先前往项目管理模块，选中一个项目！', Type:2, Align:'right', OutTime:4000});	
+{/if}
+layui.use(['form'], function(){
+	var form = layui.form;
+});
+
+function doSubimt() {
+	var res;
+	var title = $('#title').val();
+	var pid   = $('#pid').val();
+	var href  = $('#href').val();
+	var icon  = $('#icon').val();
+	var high  = 0;
+	if ($("input[name='high']").is(':checked')) {
+		high = 1;
+	}
+	var data = {'id':'{$info.ic_id}', 'title':title,'pid':pid,'href':href,'high':high, 'icon':icon};
+
+	if (title == '') {
+		$.thinkmimi({Content : '请输入模栏目名称', Type:2, Align:'right', OutTime:2000});return false;
+	}
+
+	$.ajax({
+		type: 'post',
+		data: data,
+		async: false,
+		url: "{:url('upd')}",
+		success: function(data) {
+			var array = eval('('+data+')');
+			res = array;
+			if (array['code'] == '01') {
+				$.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+				res = false;
+			}
+		}
+	});
+
+	return res;
+}
+</script>

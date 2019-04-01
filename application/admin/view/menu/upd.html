@@ -1,0 +1,133 @@
+
+
+<div id="main" role="main">
+		<div class="tab-content tab-addtabs">
+			<div id="content">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						 <div class="content">
+							<form class="layui-form" >
+								<div class="layui-form-item">
+									<label class="layui-form-label">权限名称：</label>
+									<div class="layui-input-block">
+										<input type="text" id="name" placeholder="权限名称" class="layui-input" value="{$info.m_name}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">对应版本：</label>
+									<div class="layui-input-block">
+										<select id="edition">
+											{foreach name="edition" item="v"}
+												<option value="{$v.e_id}" {eq name="v.e_id" value="$info['e_id']"}selected{/eq}>{$v.e_edition}</option>
+											{/foreach}
+										</select>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">入口：</label>
+									<div class="layui-input-block">
+										<input type="text" id="app" placeholder="默认admin" class="layui-input" value="{$info.m_app}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">控制器：</label>
+									<div class="layui-input-block">
+										<input type="text" id="controller" placeholder="控制器，默认取上级" class="layui-input" value="{$info.m_controller}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">方法：</label>
+									<div class="layui-input-block">
+										<input type="text" id="action" placeholder="方法" class="layui-input" value="{$info.m_action}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">排序：</label>
+									<div class="layui-input-block">
+										<input type="text" id="sort" placeholder="排序，越大越靠前" class="layui-input" value="{$info.m_sort}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">icon图标</label>
+									<div class="layui-input-block">
+										<input type="text" id="icon" placeholder="可参考Icon表" class="layui-input" value="{$info.m_icon}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">上级权限：</label>
+									<div class="layui-input-block" id="pid" data-id="{$info.m_pid}">
+										<input type="text" disabled value="{$name}" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">显示/隐藏：</label>
+									<div class="layui-input-block">
+										<input type="checkbox" name="display" id="display" value="1" lay-skin="switch" lay-text="显示|隐藏" {eq name="info.m_display" value="1"}checked{/eq}>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">启用/禁用：</label>
+									<div class="layui-input-block">
+										<input type="checkbox" name="status" id="status" value="1" lay-skin="switch" lay-text="启用|禁用" {eq name="info.m_status" value="1"}checked{/eq}>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">认证/公共：</label>
+									<div class="layui-input-block">
+										<input type="checkbox" name="type" id="type" value="1" lay-skin="switch" lay-text="认证|公共" {eq name="info.m_type" value="1"}checked{/eq}>
+									</div>
+								</div>
+								<div class="layui-form-item layui-form-text">
+									<label class="layui-form-label">备 注：</label>
+									<div class="layui-input-block">
+										<textarea name="desc" placeholder="可为空" class="layui-textarea" id="remark" rows="4">{$info.m_remark}</textarea>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<script>
+layui.use(['form'], function(){
+var form = layui.form;
+});
+
+function doSubimt() {
+var res;
+var name        = $('#name').val();
+var pid         = $('#pid').attr('data-id');
+var app         = $('#app').val();
+var controller  = $('#controller').val();
+var action      = $('#action').val();
+var type 		= (document.getElementById("type").checked === true) ? $('#type').attr('value') : 2;
+var status      = (document.getElementById("status").checked === true) ? $('#status').attr('value') : 2;
+var display     = (document.getElementById("display").checked === true) ? $('#display').attr('value'): 2;
+var sort        = $('#sort').val();
+var request     = $('#request').val();
+var remark      = $('#remark').val();
+var icon        = $('#icon').val();
+var edition     = $('#edition').val();
+var data        = {'id':{$id}, 'name':name,'pid':pid,'app':app,'controller':controller,'action':action,'type':type,'status':status,'sort':sort,'request':request,'remark':remark,'icon':icon,'edition':edition,'display':display};
+
+$.ajax({
+	type: 'post',
+	data: data,
+	async: false,
+	url: "{:url('upd')}",
+	success: function(data) {
+		var array = eval('('+data+')');
+		res = array;
+		if (array['code'] == '01') {
+			$.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+			res = false;
+		}
+	}
+});
+return res;
+}
+</script>

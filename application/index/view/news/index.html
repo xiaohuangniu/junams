@@ -1,0 +1,127 @@
+{include file="index/header" /}
+
+<div class="main">
+        <div class="main-body">
+    
+    
+    
+    
+            <div class="text">
+                <div class="left_text">
+                    <!--筛选框-->
+                    <div class="filter">
+                        <div>筛选情报:</div>
+                        {ams:tag table='demo_news' field='tags'}
+                            <a href="#"><li>{$vo}</li></a>
+                        {/ams:tag}
+                    </div>
+                    <!--正文侧边框-->
+                    <div class="text_side">
+                        <div>
+                            <div>4月</div>
+                            <div>9</div>
+                        </div>
+                    </div>
+                    <!--正文文章大框-->
+                    <div class="text_essay">
+                    
+                        {ams:list table='demo_news' field='id,title,time,columnpid' where="columnpid='$id'" limit='12' id='v' page='1'}
+                        <div class="essay_box">
+                            <div class="essay_content">
+                                <a href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">{$v.title}</a>
+                                <span><a href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">[原文链接]</a></span>
+                            </div>
+                            <!--时间分享框-->
+                            <div class="essay_joy">
+                                <span>{$v.time}</span>
+                                <span>分享至</span>
+                                <a href="#"><img src="__HOME__/index/images/weibo.png" alt="微博分享" title="微博分享" class="joy_weibo" /></a>
+                                <a href="#"><img src="__HOME__/index/images/weixin.png" alt="微信分享" title="微信分享" class="joy_weixin" /></a>
+                            </div>
+                        </div>
+                        {/ams:list}
+
+
+                    </div>
+                    <!--分页按钮框-->
+                    <div class="page_box">
+                        {$page}
+                    </div>
+                </div>  
+                
+                
+                <div class="right_box">
+                    <div class="right_class">
+    
+    
+                        <div class="right_title">热门标签</div>
+                            <div class="right_new4">
+                                {ams:tag table='demo_news' field='tags'}
+                                    <a href="#"><div class="rn3_title">{$vo}</div></a>
+                                {/ams:tag}  
+                            </div>      
+                        </div>
+    
+    
+                        <div class="right_class">            
+                            <div class="right_title">热点聚焦</div>            
+                                <div class="right_new4">                
+                                    <a href="#"><div class="rn4_title">延米是什么？</div></a>                
+                                    <a href="#"><div class="rn4_title">一套沙发多少钱</div></a>                
+                                    <a href="#"><div class="rn4_title">白手起家</div></a>                
+                                    <a href="#"><div class="rn4_title">怎样设计装修更好看？</div></a>                
+                                    <a href="#"><div class="rn4_title">蓝瘦 香菇</div></a>               
+                                    <a href="#"><div class="rn4_title">爱家秀场沙发</div></a>                
+                                    <a href="#"><div class="rn4_title">爱家秀场沙发</div></a>                
+                                    <a href="#"><div class="rn4_title">加盟爱家秀场年收益五百万</div></a>            
+                                </div>       
+                            </div>
+    
+    
+                        <div class="right_class">            
+                            <div class="right_title">热门文章</div>            
+                            <div class="right_new3">
+
+                                {ams:list table='demo_news' field='id,title,time,columnpid,thumbnail' order='praise DESC' limit='10' id='v'}
+                                    {php}$key++;{/php}
+                                    {if condition="$key <= 2"}
+                                        <a href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">                 
+                                            <div class="right_centent3 tw_tj2">                    
+                                                <div class="rn3_dz" style="background:url(__HOME__/index/images/jb{$key}.png)">Top{$key}</div>
+                                                <div class="right_textback3"></div>
+                                                <div class="right_text3"><span>{$v.title}</span></div>
+                                                <img class="right_newimg3" src="{$v.thumbnail}">
+                                            </div>
+                                        </a>
+                                    {else /}
+                                        <a href="/news/details/pid/{$v.columnpid}/id/{$v.id}.html">
+                                            <div class="right3_div">
+                                                <div class="right3_imgbox">
+                                                    <div class="r3_dz1"></div>
+                                                    <div class="r3_dz2">{$key}</div>
+                                                    <img src="{$v.thumbnail}">
+                                                </div>
+                                                <div class="right3_text">
+                                                    <div><span>{$v.title}</span></div>
+                                                    <div>{$v.time}</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    {/if}
+                                {/ams:list}  
+                            </div>
+                        </div>
+                </div>
+    
+    
+            </div>
+    
+    
+    
+    
+    
+    
+        </div>
+    </div>
+
+{include file="index/footer" /}

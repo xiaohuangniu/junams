@@ -1,0 +1,214 @@
+<div id="main" role="main">
+		<div class="tab-content tab-addtabs">
+			<div id="content">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						 <div class="content">
+							<form class="layui-form" >
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											用户名
+										</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" id="user" placeholder="用户名" value="{$info.m_user}">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											密码
+										</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" id="pwd" placeholder="密码">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											手机号
+										</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" id="phone" placeholder="手机号" value="{$info.m_phone}">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">
+											真实姓名
+										</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" id="nice" placeholder="真实姓名" value="{$info.m_nice}">
+										</div>
+									</div>
+
+									<div class="department-root layui-form-item">
+										<label class="layui-form-label">
+											所属部门
+										</label>
+										<div class="layui-input-block">
+											<select id="structure" lay-search>
+												<option value="">可搜索</option>
+												{volist name="structure" id="vo"}
+													<option value="{$vo.s_id}" {eq name="info.m_structure" value="$vo.s_id"}selected{/eq}>{$vo.s_name}</option>
+												{/volist}
+											</select> 
+										</div>
+									</div>
+
+									<div class="department-root layui-form-item">
+										<label class="layui-form-label">
+											所属岗位
+										</label>
+										<div class="layui-input-block">
+											<select id="job" lay-search>
+												<option value="">可搜索</option>
+												{volist name="job" id="vo"}
+													<option value="{$vo.j_id}" {eq name="info.m_job" value="$vo.j_id"}selected{/eq}>{$vo.j_name}</option>
+												{/volist}
+											</select> 
+										</div>
+									</div>
+									
+									<div class="layui-form-item">
+										<label class="layui-form-label">启用/禁用</label>
+										<div class="layui-input-block">
+											<input type="checkbox" id="status" value="1" lay-skin="switch" lay-text="启用|禁用" {eq name="info.m_status" value="1"}checked{/eq}>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">在职/离职</label>
+										<div class="layui-input-block">
+											<input type="checkbox" id="existence" value="1" lay-skin="switch" lay-text="在职|离职" {eq name="info.m_existence" value="1"}checked{/eq}>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">超级管理员</label>
+										<div class="layui-input-block">
+											<input type="checkbox" id="type" value="1" lay-skin="switch" lay-filter="type" lay-text="OFF|ON" {eq name="info.m_type" value="1"}checked{/eq}>
+										</div>
+									</div>
+									<div class="department-root layui-form-item">
+										<label class="layui-form-label">全国/局部</label>
+										<div class="layui-input-block">
+											<input type="checkbox" id="region" value="1" lay-skin="switch" lay-text="全国|局部" lay-filter="region" {eq name="info.m_nationwide" value="1"}checked{/eq}> 
+											<button type="button" class="btn btn-xs btn-success btn-editone click_region" style="margin-top: 6px;">选择区域</button>
+										</div>
+									</div>
+
+									<div class="department-root layui-form-item">
+										<label class="layui-form-label">已选区域</label>
+										<div class="layui-input-block" id="my_area_list">
+											{volist name="province_ids" id="v"}
+												<div class="job2" id="{$v.r_id}" name="1">{$v.r_name}<img src="__ADMIN__/images/close.gif" onclick="remove_area(this)"/></div>
+											{/volist}
+											{volist name="city_ids" id="v"}
+												<div class="job2" id="{$v.r_id}" name="2">{$v.r_name}<img src="__ADMIN__/images/close.gif" onclick="remove_area(this)"/></div>
+											{/volist}
+											{volist name="area_ids" id="v"}
+												<div class="job2" id="{$v.r_id}" name="3">{$v.r_name}<img src="__ADMIN__/images/close.gif" onclick="remove_area(this)"/></div>
+											{/volist}
+
+											
+										</div>
+									</div>
+
+									<input type="hidden" id="province_ids" value="{$info.m_province}" />
+									<input type="hidden" id="city_ids" value="{$info.m_city}" />
+									<input type="hidden" id="area_ids" value="{$info.m_area}" />
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div id="mdialog2" style="display:none;padding: 15px;"> 
+	<table>
+		<tr><td colspan="2" style="padding-bottom:15px;font-size: 12px"><font color="red">说明如果添加了省份，表示可以管辖该省份下包括的省级、市级和区级，如果添加市级表示可以管辖该市的市级和区域，如果添加区域只能管辖改区域级</font></td></tr>
+		<tr style="height: 60px; font-size: 12px"><td>选择加载区域</td><td>
+			<select name="province" id="province_list" onchange="getCity(this.value);" style="height: 30px;"><option value="1">选择省份</option></select>
+			<select name="region" id="region_list" onchange="getArea(this.value);" style="height: 30px;"><option value="">选择城市</option></select>
+		</td></tr>
+		<tr style="font-size: 12px"><td width="100px">确认添加区域</td><td id="area_list">
+			</td></tr>
+	</table>
+</div>
+{include file="manager/jscss" /}
+{eq name="info.m_type" value="1"}<script>$('.department-root').css('display','none');</script>{/eq}
+{eq name="info.m_nationwide" value="1"}<script>$('.click_region').css('display','none');</script>{/eq}
+								
+<script>
+layui.use(['form','tree', 'layer'], function(){
+	var layer = layui.layer,form = layui.form;
+
+	//监听点击选择区域
+	$(".click_region").on('click', function(){
+		layer.open({
+			type: 1, 
+			area: ['620px', '440px'], //宽高
+			content: $('#mdialog2')
+		});
+	});
+	// 监听点击超级管理员
+	form.on('switch(type)', function(data){
+		if (data.elem.checked) {
+			$('.department-root').css('display','none');
+		}else{
+			$('.department-root').css('display','block');
+		}
+	}); 
+	// 监听全国地区开关
+	form.on('switch(region)', function(data){
+		if (data.elem.checked) {
+			$('.click_region').css('display','none');
+			$('#my_area_list').html('<button class="btn btn-xs btn-success btn-editone">全国</button>');
+			$('#province_ids').val('');
+			$('#city_ids').val('');
+			$('#area_ids').val('');
+		}else{
+			$('.click_region').css('display','inline-block');
+			$('#my_area_list').html('');
+		}
+	}); 
+});
+
+function doSubimt() {
+	var res;
+	var user        = $('#user').val();
+	var pwd         = $('#pwd').val();
+	var phone       = $('#phone').val();
+	var nice        = $('#nice').val();
+	var structure   = $('#structure').val();
+	var job         = $('#job').val();
+	var status      = (document.getElementById("status").checked === true) ? $('#status').attr('value') : 2;
+	var existence   = (document.getElementById("existence").checked === true) ? $('#existence').attr('value') : 2;
+	var type        = (document.getElementById("type").checked === true) ? $('#type').attr('value') : 2;
+	var region      = (document.getElementById("region").checked === true) ? $('#region').attr('value') : 2;
+	var province    = $('#province_ids').val();
+	var city        = $('#city_ids').val();
+	var area        = $('#area_ids').val();
+
+	var data        = {'pid':{$info.m_id},'user':user,'pwd':pwd,'phone':phone,'nice':nice,'structure':structure,'job':job,'status':status,'existence':existence,'type':type,'region':region,'province':province,'city':city,'area':area};
+	if (user == '') {
+		$.thinkmimi({Content : '用户名不能为空！', Type:2, Align:'right', OutTime:2000});return false;
+	}
+	if (nice == '') {
+		$.thinkmimi({Content : '真实姓名不能为空！', Type:2, Align:'right', OutTime:2000});return false;
+	}
+	$.ajax({
+		type: 'post',
+		data: data,
+		async: false,
+		url: "{:url('upd')}",
+		success: function(data) {
+			var array = eval('('+data+')');
+			res = array;
+			if (array['code'] == '01') {
+				$.thinkmimi({Content : array['msg'], Type:2, Align:'right', OutTime:2000});
+				res = false;
+			}
+		}
+	});
+
+	return res;
+}
+</script>

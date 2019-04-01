@@ -1,0 +1,34 @@
+<style>.sidebar-menu a{cursor: pointer}.treeview-menu>li>a{padding: 5px 5px 5px 15px;}.sidebar-menu>li>a {padding: 8px 5px 8px 15px;}.sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu>li:hover>a>span{top: -5px;}</style>
+<ul class="sidebar-menu" data-widget="tree">
+    <li>
+      <a href="javascript:;" data-url="{:url('index/main')}">
+        <i class="fa fa-dashboard"></i> <span>控制台</span>
+        <span class="pull-right-container"> <small class="label pull-right bg-blue">hot</small></span>
+      </a>
+    </li>
+
+    {volist name="admin_menu" id="v"}
+    <li class="treeview">
+      <a href="javascript:;">
+        <i class="fa {$v.m_icon}"></i> <span class="menu-text">{$v.m_name}</span> 
+        <span class="pull-right-container"><i class="fa fa-angle-left"></i></span>
+      </a>
+      <ul class="treeview-menu" style="display: none;">
+        {volist name="v.children" id="vv"}
+        <li>
+          <a href="javascript:;" data-url="{:url($vv['m_controller'].'/'.$vv['m_action'])}">
+            <i class="fa {$vv.m_icon}"></i><span class="menu-text">{$vv.m_name}</span>
+            <span class="pull-right-container"></span>
+          </a>
+        </li>
+        {/volist}
+      </ul>
+    </li>
+    {/volist}
+
+    <li class="header" data-rel="external">相关链接</li>
+    <li data-rel="external"><a href="https://xiuxian.junphp.com" target="_blank"><i class="fa fa-list text-red"></i> <span>神牛教</span></a></li>
+    <li data-rel="external"><a href="https://blog.junphp.com" target="_blank"><i class="fa fa-comment text-yellow"></i> <span>交流社区</span></a></li>
+    <li data-rel="external"><a href="tencent://message/?uin=1731223728&Site=在线QQ&Menu=yes"><i class="fa fa-qq text-aqua"></i> <span>小黄牛</span></a></li>
+</ul>
+
