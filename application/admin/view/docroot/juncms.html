@@ -86,6 +86,12 @@
                             </ul>
 
                             <li> <a class="section-link">&nbsp;</a></li>
+                            <li> <a class="section-link">公关函数库：</a></li>
+                            <ul>
+                                <li><a class="section-link" href="#jun-过滤敏感词">1、过滤敏感词</a></li>
+                            </ul>
+
+                            <li> <a class="section-link">&nbsp;</a></li>
                             <li> <a class="section-link">后台JS用法：</a></li>
                             <ul>
                                 <li><a class="section-link" href="#jun-弹窗提示">1、弹窗提示</a></li>
@@ -980,6 +986,29 @@ public function dow_zip($url) {}
         <p>注意，该类在使用时，所填入的目录相关参数，都建议使用绝对路径，否则容易发生错误。</p>
 
 
+        <h2 id="jun-过滤敏感词">1、过滤敏感词</h2>
+        <p>
+            有效域：全局共用<br/>
+            介绍：主要关联后端的敏感词库，用于对字符串进行敏感词识别过滤。<br/>
+            详细介绍如下：
+        </p>
+<pre>
+/**
+ * 过滤敏感词
+ * @todo 无
+ * @author 小黄牛
+ * @version v1.2.1 + 2019.04.02
+ * @deprecated 暂不弃用
+ * @global 无
+ * @param string $str 需要被过滤的字符串
+ * @return array['code'=>'bool', 'msg'=>'包含的敏感词']
+*/
+function vif_sensitive($str=null) {
+
+}
+</pre>
+
+
         <!--后台前端JS文档-->
         <h2 id="jun-弹窗提示">1、弹窗提示</h2>
 <p><pre>
@@ -1067,6 +1096,7 @@ function doSubimt() {
         <p>16、2019-03-28 开发者：小黄牛</p>
         <p>17、2019-03-29 开发者：小黄牛</p>
         <p>18、2019-04-01 开发者：小黄牛</p>
+        <p>19、2019-04-03 开发者：小黄牛、宣言、默许、水云霜</p>
 
         <h2 id="jun-注意事项">注意事项</h2>
         <p class="tip">

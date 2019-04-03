@@ -398,7 +398,7 @@ EOF;
      * 导出项目
      * @todo 无
      * @author 小黄牛
-     * @version v1.1.7 + 2019.03.28
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -454,6 +454,8 @@ EOF;
         # 读取项目对应的数据表
         $model = Db::name('item_model')->where('i_id', $id)->select();
         foreach ($model as $v) {
+            # 读取模型对应的数据
+            $sql .= $this->_insert_record($prefix.'item_model', $v);
             # 导出表结构
             $sql .= $this->_insert_table_structure($prefix.$v['im_table']);
             # 导出表对应的全部数据
@@ -472,6 +474,7 @@ EOF;
                 } 
             }
         }
+        
         # 读取项目对应的栏目数据
         $list = Db::name('item_column')->where('i_id', $id)->select();
         foreach ($list as $val) {

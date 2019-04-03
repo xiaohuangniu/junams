@@ -3461,6 +3461,9 @@ CREATE TABLE `jun_item_model` (
 -- ----------------------------
 -- Records of jun_item_model
 -- ----------------------------
+INSERT INTO `jun_item_model` VALUES ('5c998f3953a19', '5c8f383470c45', '文章模型', 'demo_news', '', '0', '1', '1', '1553567545', '小黄牛');
+INSERT INTO `jun_item_model` VALUES ('5c998f726056d', '5c8f383470c45', '轮播图模型', 'demo_benner', '', '0', '0', '1', '1553567602', '小黄牛');
+INSERT INTO `jun_item_model` VALUES ('5c998f87d764e', '5c8f383470c45', '单页模型', 'demo_page', '', '0', '0', '1', '1553567623', '小黄牛');
 
 -- ----------------------------
 -- Table structure for jun_job

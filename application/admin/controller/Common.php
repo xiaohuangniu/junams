@@ -60,7 +60,7 @@ class Common extends Controller {
      * @return void
     */
     public function edition() {
-        $edition = 'v1.1.8';
+        $edition = 'v1.2.1';
         $curl = curl_init();  
         curl_setopt($curl, CURLOPT_URL, 'https://xiuxian.junphp.com/juncms/edition?edition='.$edition);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);

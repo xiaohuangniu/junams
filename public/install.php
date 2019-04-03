@@ -297,7 +297,7 @@ return [
             </div>
         </form>
         <script src="admin/bower_components/jquery/dist/jquery.min.js"></script>
-        <script>
+        <script charset="UTF-8">
             $(function () {
                 $('form :input:first').select();
 
@@ -320,7 +320,7 @@ return [
                                 $button.remove();
                                 localStorage.setItem("fastep", "installed");
                             } else {
-                                $('#error').show().text(ret);
+                                $('#error').show().html(ret);
                                 $button.prop('disabled', false).text('点击安装');
                                 $("html,body").animate({
                                     scrollTop: 0

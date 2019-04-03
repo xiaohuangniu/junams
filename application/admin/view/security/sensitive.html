@@ -1,3 +1,7 @@
+<style>
+.layui-form-label {width: 120px!important;}
+.layui-input-block {margin-left: 120px!important;}
+</style>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 	<!-- END RIBBON -->
@@ -37,7 +41,7 @@
 												<div class="layui-form-item">
 													<label class="layui-form-label"></label>
 													<div class="layui-input-block">
-															<button id="prevstep" class="btn btn-sm btn-primary" style="display: inline-block;">确认提交</button>
+															<button type="button" id="prevstep" class="btn btn-sm btn-primary" style="display: inline-block;">确认提交</button>
 													</div>
 												</div>
 												{/if}
@@ -69,9 +73,9 @@ var form = layui.form;
 $("#prevstep").on('click', function(){
 	var content = $('#content').val();
 	var data    = {content:content};
-
-	if (content == '') {
-		$.thinkmimi({Content : '敏感词内容不能为空！', Type:2, Align:'right', OutTime:2000});return false;
+	var n = (content.split('|')).length;
+	if (n > 5000) {
+		$.thinkmimi({Content : '敏感词最大支持个数为5000个，当前个数为：'+n+' 个！', Type:2, Align:'right', OutTime:3000}); return false;
 	}
 
 	$.ajax({

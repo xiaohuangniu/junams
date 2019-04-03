@@ -22,7 +22,7 @@ class Login extends Backend{
      * 登录界面
      * @todo 无
      * @author 小黄牛
-     * @version v1.1.3 + 2019.03.18
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -73,7 +73,7 @@ class Login extends Backend{
         if ($status == 1) {
             $ip   = Request::instance()->ip();  // IP设备绑定
             $time = time() + (86400 * 7);       // 过期时间
-            $rand = random_int(100000, 999999); // 随机安全码
+            $rand = mt_rand(100000, 999999); // 随机安全码
             # 使用密码本加密用户名，使用SHA1加密签名串
             $sha1 = \org\Encryption::run($user).'|'.sha1($rand.$time.$ip);
             # 七天登录

@@ -257,7 +257,7 @@ class Manager extends Backend{
      * 修改管理员
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.29
+     * @version v1.2.1 + 2019.04.03
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -297,14 +297,24 @@ class Manager extends Backend{
                 }
             }
 
+            $count  = $this->DB->where('m_type', 1)->count();
             if ($type == 1) {
                 if ($type != $res['m_type']) {
-                    $count  = $this->DB->where('m_type', 1)->count();
                     if ($count >= 3) {
                         $this->addLog(26, '最多只能同时存在 3 个超级管理员', 3, false);
                         $this->json('01', '最多只能同时存在 3 个超级管理员');
                     }
                 }
+            } else {
+                if ($count == 1) {
+                    $this->addLog(26, '系统必须保留至少 1 个超级管理员', 3, false);
+                    $this->json('01', '系统必须保留至少 1 个超级管理员');
+                }
+            }
+
+            if ($count == 1 && $status == 2) {
+                $this->addLog(26, '系统必须保留至少 1 个超级管理员状态开启！', 3, false);
+                $this->json('01', '系统必须保留至少 1 个超级管理员状态开启！');
             }
 
             $data = [

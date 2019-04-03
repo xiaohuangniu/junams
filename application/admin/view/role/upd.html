@@ -107,9 +107,16 @@ function doSubimt() {
 	var name        = $('#name').val();
 	var status      = (document.getElementById("status").checked === true) ? $('#status').attr('value') : 2;
 	var remark      = $('#remark').val();
-	var data        = {'id':JSON.stringify(id), 'name':name, 'remark':remark, 'status':status, 'upd_id':'{$info.r_id}'};
+	var data        = {'id':JSON.stringify(id), 'name':name, 'remark':remark, 'status':status, 'pid':'{$info.r_id}'};
 	if (name == '') {
 		$.thinkmimi({Content : '角色名称不能为空！', Type:2, Align:'right', OutTime:2000});return false;
+	}
+	var font_num= {}; 
+	font_num.get_length = function(str) { 
+		return str.replace(/[\u0391-\uFFE5]/g, "a").length;
+	};
+	if (font_num.get_length(name) > 20) {
+		$.thinkmimi({Content : '角色名称最大只支持20个汉字！', Type:2, Align:'right', OutTime:2000});return false;
 	}
 
 	$.ajax({

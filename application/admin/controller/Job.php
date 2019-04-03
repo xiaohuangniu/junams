@@ -83,7 +83,7 @@ class Job extends Backend{
      * 修改
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -132,7 +132,7 @@ class Job extends Backend{
             $this->assign('array', explode(',', $res['r_id']));
 
             # 获取所有角色列表
-            $role = Db::name('role')->select();
+            $role = Db::name('role')->where('r_status', 1)->select();
             $this->assign('role', $role);
 			return $this->fetch();
 		}
@@ -142,7 +142,7 @@ class Job extends Backend{
      * 新增岗位
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -189,7 +189,7 @@ class Job extends Backend{
             }
             
             # 获取所有角色列表
-            $role = Db::name('role')->select();
+            $role = Db::name('role')->where('r_status', 1)->select();
             $this->assign('role', $role);
 			return $this->fetch();
 		}

@@ -37,7 +37,7 @@ class Security extends Backend{
      * 敏感词列表
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -49,8 +49,13 @@ class Security extends Backend{
         }
 
         $content = file_get_contents($this->SENSITIVE_PATH);
+        $num     = 0;
+        if (!empty($content)) {
+            $num = count(explode('|', $content));
+        }
+
         $this->assign('content', $content);
-        $this->assign('num', count(explode('|', $content)));
+        $this->assign('num', $num);
         return $this->fetch();
     }
 
@@ -58,15 +63,23 @@ class Security extends Backend{
      * 修改敏感词
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.03
      * @deprecated 暂不弃用
      * @global 无
      * @return void
     */
     public function sensitive_upd(){
         $content = Request::instance()->post('content');
-        $res = file_put_contents($this->SENSITIVE_PATH, $content);
-        if ($res) {
+        $array   = explode('|', $content);
+        $txt     = '';
+        foreach ($array as $v) {
+            if (!empty($v)) {
+                $txt .= $v.'|';
+            }
+        }
+        
+        $res = file_put_contents($this->SENSITIVE_PATH, rtrim($txt, '|'));
+        if ($res !== false) {
             $this->addLog(31, '修改成功', 1, false);
             $this->json('00', '修改成功');
         }
@@ -80,7 +93,7 @@ class Security extends Backend{
      * 黑名单IP列表
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -91,8 +104,12 @@ class Security extends Backend{
                 ->field('A.*, B.m_nice')
                 ->join('__MANAGER__ B', 'A.m_id = B.m_id')
                 ->order('A.bi_time DESC')
-                ->select();
+                ->paginate(15);
+
+        $page = $list->render();
+
         $this->assign('list', $list);
+        $this->assign('page', $page);
         return $this->fetch();
     }
 

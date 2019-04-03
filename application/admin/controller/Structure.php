@@ -83,7 +83,7 @@ class Structure extends Backend{
      * 修改部门
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.29
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -137,7 +137,7 @@ class Structure extends Backend{
             $this->assign('info', $res);
 
             # 获取所有角色列表
-            $role = Db::name('role')->select();
+            $role = Db::name('role')->where('r_status',1)->select();
             $this->assign('role', $role);
 			return $this->fetch();
 		}
@@ -147,7 +147,7 @@ class Structure extends Backend{
      * 新增部门
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.29
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -200,7 +200,7 @@ class Structure extends Backend{
             }
             
             # 获取所有角色列表
-            $role = Db::name('role')->select();
+            $role = Db::name('role')->where('r_status',1)->select();
             $this->assign('role', $role);
 			return $this->fetch();
 		}

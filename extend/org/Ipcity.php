@@ -17,14 +17,14 @@ class Ipcity {
      * 检测域名是否被微信屏蔽
      * @todo 无
      * @author 小黄牛
-     * @version v1.1.7 + 2019.03.29
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return string $ip IP地址
      * @return bool|array
     */
     public static function run($ip) {
-        if ($ip == '127.0.0.1') {
+        if ($ip == '127.0.0.1' || $ip == '0.0.0.0') {
             return [
                 'province'=>'本地',
                 'city'=>'本地',

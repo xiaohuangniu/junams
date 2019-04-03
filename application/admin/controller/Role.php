@@ -37,13 +37,13 @@ class Role extends Backend{
      * 角色列表
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.29
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
     */
     public function index(){
-        $list = $this->ROLE->paginate(20);
+        $list = $this->ROLE->paginate(15);
         $page = $list->render();
         $this->assign('list', $list);
         $this->assign('page', $page);
@@ -54,7 +54,7 @@ class Role extends Backend{
      * 新增角色
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.29
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -70,8 +70,14 @@ class Role extends Backend{
                 $this->addLog(19, '请先选择对应的权限', 3, false);
                 $this->json('01', '请先选择对应的权限');
             }
-            $menu   = implode(',', $pid);
 
+            $res = $this->ROLE->where('r_name', $name)->value('r_id');
+            if ($res) {
+                $this->addLog(19, '角色名称已存在！', 3, false);
+                $this->json('01', '角色名称已存在！');
+            }
+            $menu   = implode(',', $pid);
+            
             $data = [
                 'r_name'   => $name,
                 'r_status' => $status,
@@ -80,7 +86,7 @@ class Role extends Backend{
             ];
 
             $res  = $this->ROLE->insert($data);
-            if ($res > 0) {
+            if ($res !== false) {
                 $this->addLog(19, '新增成功', 1, false);
                 $this->json('00', '新增成功');
             }
@@ -99,12 +105,15 @@ class Role extends Backend{
      * 修改角色
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.29
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
     */
     public function upd(){
+        $id   = Request::instance()->param('pid');
+        $info = Db::name('role')->where('r_id', $id)->find();
+
         # 判断是否AJAX请求
         if (Request::instance()->isAjax()) {
             $name   = Request::instance()->post('name');
@@ -115,8 +124,14 @@ class Role extends Backend{
                 $this->addLog(20, '请先选择对应的权限', 3, false);
                 $this->json('01', '请先选择对应的权限');
             }
+            if ($name != $info['r_name']) {
+                $res = $this->ROLE->where('r_name', $name)->value('r_id');
+                if ($res) {
+                    $this->addLog(20, '角色名称已存在！', 3, false);
+                    $this->json('01', '角色名称已存在！');
+                }
+            }
             $menu   = implode(',', $pid);
-            $upd_id = Request::instance()->post('upd_id');
 
             $data = [
                 'r_name'   => $name,
@@ -125,8 +140,8 @@ class Role extends Backend{
                 'r_menu_list' => $menu,
             ];
 
-            $res  = $this->ROLE->where('r_id', $upd_id)->update($data);
-            if ($res > 0) {
+            $res  = $this->ROLE->where('r_id', $id)->update($data);
+            if ($res !== false) {
                 $this->addLog(20, '修改成功', 1, false);
                 $this->json('00', '修改成功');
             }
@@ -135,8 +150,6 @@ class Role extends Backend{
             $this->json('01', '修改失败');
         }else{
             $list = $this->MENU->field('m_id as checkboxValue, m_name as name,  m_pid as pid')->where('m_type = 1 AND m_status = 1')->select();
-            $id   = Request::instance()->param('pid');
-            $info = Db::name('role')->where('r_id', $id)->find();
             $this->assign('json', json_encode( roleUpd($list, $info['r_menu_list'])) );
             $this->assign('info', $info);
             return $this->fetch();

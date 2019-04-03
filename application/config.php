@@ -144,7 +144,7 @@ return [
     'view_replace_str' => [
         '__ADMIN__' => (dirname($_SERVER['SCRIPT_NAME']) != '/' && dirname($_SERVER['SCRIPT_NAME']) != '\\') ? dirname($_SERVER['SCRIPT_NAME']).'/public/admin' : ''.'/public/admin',
         '__HOME__'  => (dirname($_SERVER['SCRIPT_NAME']) != '/' && dirname($_SERVER['SCRIPT_NAME']) != '\\') ? dirname($_SERVER['SCRIPT_NAME']).'/public/home' : ''.'/public/home',
-        'JUNCMS'    => 'JunAms内容管理系统 V1.1.8',
+        'JUNCMS'    => 'JunAms内容管理系统 V1.2.1',
     ],
 
     // 默认跳转页面对应的模板文件

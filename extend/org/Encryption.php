@@ -16,7 +16,7 @@ class Encryption{
      * 执行加密
      * @todo 无
      * @author 小黄牛
-     * @version v1.1.3 + 2019.03.18
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @param string $str 加密串
@@ -35,7 +35,7 @@ class Encryption{
         # 获取字符串长度
         $leng2 = mb_strlen($pod);   
         # 获得一个不会大于字符串长度的随机数
-        $red2=random_int(0,$leng2);
+        $red2=mt_rand(0,$leng2);
         # 2.插入自定义密文
         $need2 = substr($pod, 0, $red2) .$key. substr($pod, $red2, $leng2);
         # 3.base加密

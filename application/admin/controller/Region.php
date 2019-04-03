@@ -32,7 +32,7 @@ class Region extends Backend{
      * 地区列表
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.03
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -41,18 +41,18 @@ class Region extends Backend{
         # 判断是否AJAX请求
         if (Request::instance()->isAjax()) {
             $pid  = Request::instance()->post('id');
-			$list = $this->DB->where("r_pid = '{$pid}' OR r_id = '{$pid}'")->select();
+			$list = $this->DB->where("r_pid = '{$pid}' OR r_id = '{$pid}'")->order('r_sort ASC, r_id ASC')->select();
             if (count($list) == 1 && $list[0]['r_type'] == 2) {
                 $list = Db::name('area')->where("r_pid = '{$pid}'")->select();
             }
             echo json_encode($list);
         } else {
             # 获取一级省
-            $list = $this->DB->where('r_pid = 0')->select();
+            $list = $this->DB->where('r_pid = 0')->order('r_sort ASC, r_id ASC')->select();
             $this->assign('list', $list);
 
             # 获取所有地区节点
-            $list = $this->DB->field('r_id as id, r_name as name,  r_pid as pid')->select();
+            $list = $this->DB->field('r_id as id, r_name as name,  r_pid as pid')->order('r_sort ASC, r_id ASC')->select();
             $this->assign('json', json_encode(menuFor($list)) );
 
             return $this->fetch();
@@ -99,7 +99,7 @@ class Region extends Backend{
      * 修改地区
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -125,9 +125,21 @@ class Region extends Backend{
                 $this->addLog(14, '地区编码不能为空或0', 3, false);
                 $this->json('01', '地区编码不能为空或0');
             }
-           
-            $level = $this->DB->where('r_id', $pid)->value('r_type');
-            $type  = $level+1;
+
+            $info   = $this->DB->where('r_id', $id)->find();
+            if (!$info) {
+                $info = Db::name('area')->where('r_id', $id)->find();
+                $info['r_car_type'] = '';
+            }
+            
+            $pid_info = $this->DB->where('r_id', $pid)->field('r_type, r_code')->find();
+            if (!$pid_info) {
+               $pid_info['r_type'] = $pid_info['r_code'] = 0;
+            }
+            $type  = $pid_info['r_type']+1;
+
+            $this->vif_code($code, $pid_info['r_code'], 14, $info['r_code']);
+
             # 等级为3是区级表123
             if ($type != 3) {
                 $data = [
@@ -151,7 +163,7 @@ class Region extends Backend{
                 $res = Db::name('area')->where('r_id', $id)->update($data);
             }
 
-            if ($res > 0) {
+            if ($res !== false) {
                 $this->addLog(14, '修改成功', 1, false);
                 $this->json('00', '修改成功');
             }
@@ -186,7 +198,7 @@ class Region extends Backend{
      * 新增地区
      * @todo 无
      * @author 小黄牛
-     * @version v1.0.0.1 + 2018.9.30
+     * @version v1.2.1 + 2019.04.02
      * @deprecated 暂不弃用
      * @global 无
      * @return void
@@ -212,8 +224,14 @@ class Region extends Backend{
                 $this->json('01', '地区编码不能为空或0');
             }
 
-            $level = $this->DB->where('r_id', $pid)->value('r_type');
-            $type  = $level+1;
+            $pid_info = $this->DB->where('r_id', $pid)->field('r_type, r_code')->find();
+            if (!$pid_info) {
+               $pid_info['r_type'] = $pid_info['r_code'] = 0;
+            }
+            $type  = $pid_info['r_type']+1;
+
+            $this->vif_code($code, $pid_info['r_code'], 13);
+
             # 等级为3是区级表123
             if ($type != 3) {
                 $data = [
@@ -237,7 +255,7 @@ class Region extends Backend{
                 $res = Db::name('area')->insert($data);
             }
 				
-            if ($res > 0) {
+            if ($res !== false) {
                 $this->addLog(13, '新增成功', 1, false);
                 $this->json('00', '新增成功');
             }
@@ -259,6 +277,52 @@ class Region extends Backend{
 
 			return $this->fetch();
 		}
+    }
+
+    /**
+     * 判断地区编码是否存在，从属性关系是否错误
+     * @todo 无
+     * @author 小黄牛
+     * @version v1.2.1 + 2019.04.02
+     * @deprecated 暂不弃用
+     * @global 无
+     * @param int $vif_code 需要验证的地区编码
+     * @param int $pid_code 父级地区编码
+     * @param int $msg_code 日志编码
+     * @param int $in_code 原先的地区编码
+     * @return void
+    */
+    private function vif_code($vif_code, $pid_code, $msg_code, $in_code=null) {
+
+        if ($vif_code != $in_code) {
+            $res1 = $this->DB->where('r_code', $vif_code)->value('r_id');
+            $res2 = Db::name('area')->where('r_code', $vif_code)->value('r_id');
+
+            if ($res1 || $res2) {
+                $this->addLog($msg_code, '地区编码已存在！', 3, false);
+                $this->json('01', '地区编码已存在！');
+            }
+        }
+
+        if (!preg_match("/^[1-9][0-9]*$/", $vif_code)) {
+            $this->addLog($msg_code, '地区编码必须为整数类型！', 3, false);
+            $this->json('01', '地区编码必须为整数类型！');
+        }
+
+        if (mb_strlen($vif_code, 'utf8') != 6) {
+            $this->addLog($msg_code, '地区编码长度错误，正确为6位数字！', 3, false);
+            $this->json('01', '地区编码长度错误，正确为6位数字！');
+        }
+        
+        # 判断从属性，为父级前2位
+        if (!empty($pid_code)) {
+            $left  = substr($vif_code, 0, 2);  
+            $right = substr($pid_code, 0, 2); 
+            if ($left != $right) {
+                $this->addLog($msg_code, '地区编码与父级地区编码从属关系错误！', 3, false);
+                $this->json('01', '地区编码与父级地区编码从属关系错误！');
+            }
+        } 
     }
 
     /**
